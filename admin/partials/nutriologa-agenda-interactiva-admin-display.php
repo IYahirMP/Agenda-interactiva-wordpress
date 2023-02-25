@@ -13,58 +13,290 @@
  */
 ?>
 
+<?php
+//echo json_encode($a);
+
+//$hoy = date("Y-m-d");
+/*$consulta = "INSERT INTO $horario(dia, horaInicio, horaFin, ubicacion) values";
+    for ($i = 0; $i < 1000; $i++) {
+        $hora = date("H:i:s");
+        if ($i < 999) {
+            $consulta .= "('$hoy', '$hora', '$hora', 'altamirano'),";
+        } else {
+            $consulta .= "('$hoy', '$hora', '$hora', 'altamirano');";
+        }
+    }*/
+/*$consulta = "INSERT INTO $cliente(nombre, apellidoPaterno, apellidoMaterno, telefono, correo) values";
+    for ($i = 0; $i < 1000; $i++) {
+        if ($i < 999) {
+            $consulta .= "('Ivan Yahir', 'Mojica', 'Pineda', '1231231231', 'iyahirmopi@gmail.com'),";
+        } else {
+            $consulta .= "('Ivan Yahir', 'Mojica', 'Pineda', '1231231231', 'iyahirmopi@gmail.com');";
+        }
+    }*/
+
+/*$consulta = "INSERT INTO $cita(asunto, cliente, horario) values";
+    for ($i = 1; $i < 1000; $i++) {
+        if ($i < 999) {
+            $consulta .= "('Cita con cliente', '$i', '$i'),";
+        } else {
+            $consulta .= "('Cita con cliente', '$i', '$i');";
+        }
+    }*/
+
+/* echo $consulta;
+    include_once ABSPATH . "wp-admin/includes/upgrade.php";
+    dbDelta($consulta);*/
+
+global $wpdb;
+$mes = isset($_GET["mes"]) ? $_GET["mes"] : -1;
+$anio = isset($_GET["anio"]) ? $_GET["anio"] : -1;
+if ($mes == -1 || $anio == -1) {
+    die;
+}
+
+if ($mes < 10) {
+    $mes = "0$mes";
+}
+
+if ($anio < 100) {
+    $anio = "20$anio";
+}
+
+$fecha = "$anio-$mes-00";
+$mes = $mes + 1;
+$fechap = "$anio-$mes-00";
+
+$cita = $wpdb->prefix . "cita";
+$cliente = $wpdb->prefix . "cliente";
+$horario = $wpdb->prefix . "horario";
+$consulta = "SELECT wp_cita.id as id, nombre, apellidoPaterno, apellidoMaterno , dia, horaInicio, horaFin
+                    FROM $cita   JOIN $horario ON $cita.horario = $horario.id
+                                JOIN $cliente ON $cliente.id = $cita.cliente
+                                WHERE DATE(dia) >= '$fecha' AND DATE(dia) < '$fechap'";
+$eventos = $wpdb->get_results($consulta);
+
+$dia = "1";
+
+$mes = $mes - 1;
+$a = new stdClass();
+$a->$anio = new stdClass();
+$a->$anio->$mes = new stdClass();
+$a->$anio->$mes->$dia = array();
+
+$i = 0;
+foreach ($eventos as $evento => $objeto) {
+    $a->$anio->$mes->$dia[$i] = new stdClass();
+    $a->$anio->$mes->$dia[$i]->id = $objeto->id;
+    $a->$anio->$mes->$dia[$i]->startTime = $objeto->horaInicio;
+    $a->$anio->$mes->$dia[$i]->endTime = $objeto->horaFin;
+    $a->$anio->$mes->$dia[$i]->text = "Cita con " . $objeto->nombre . " " . $objeto->apellidoPaterno . " " . $objeto->apellidoMaterno;
+    $a->$anio->$mes->$dia[$i]->nombre = $objeto->nombre;
+    $a->$anio->$mes->$dia[$i]->apellidoPaterno = $objeto->apellidoPaterno;
+    $a->$anio->$mes->$dia[$i]->apellidoMaterno = $objeto->apellidoMaterno;
+    $i++;
+}
+
+$aJSON = json_encode($a);
+?>
+
 <!-- This file should primarily consist of HTML with a little bit of PHP. -->
-<h1>Agenda de la nutrióloga</h1>
+<h1 hidden>Agenda de la nutrióloga</h1>
 
 <div class="row">
     <div id="calendarContainer" class="col-md-6 col-sm-12"></div>
     <div id="organizerContainer" class="col-md-6 col-sm-12" style="margin-left: 8px;"></div>
 </div>
 
+<!-- Modal -->
+<div class="modal fade" id="modalInicial" tabindex="-1" aria-labelledby="modalInicialLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="modalInicialLabel">Acciones sobre el registro</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body d-flex flex-row justify-content-around">
+                <button type="button" class="btn btn-primary" data-bs-target="#modalRegistro" data-bs-toggle="modal">Modificar</button>
+                <button type="button" class="btn btn-danger" data-bs-target="#modalEliminar" data-bs-toggle="modal">Eliminar</button>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalRegistro" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1>Modificar el registro</h1>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <fieldset>
+                        <legend>Detalles de la cita</legend>
+                        <div class="container">
+                            <div class="row">
+                                <div class="col align-self-center justify-content-evenly">
+                                    <div class="row m-1">
+                                        <label for="nombre">Nombre:</label>
+                                    </div>
+                                    <div class="row m-1">
+                                        <label for="fecha">Fecha y hora:</label>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="row m-1">
+                                        <input type="text" id="nombre">
+                                    </div>
+                                    <div class="row m-1">
+                                        <input type="datetime-local" id="fecha">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-target="#modalInicial" data-bs-toggle="modal">Regresar</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary">Guardar cambios</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalEliminar">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1>Eliminar cita</h1>
+            </div>
+            <div class="modal-body">
+                <fieldset>
+                    <legend>¿Está seguro de que desea eliminar esta cita?</legend>
+                    <div class="d-flex flex-row justify-content-around">
+                        <button class="btn btn-primary px-4" data-bs-dismiss="modal">Sí</button>
+                        <button class="btn btn-primary px-4" data-bs-target="#modalInicial" data-bs-toggle="modal">No</button>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+    </div>
+</div>
 <script>
-    // Basic config
-    var calendar = new Calendar("calendarContainer", "small",
-        ["Monday", 3],
-        ["#2a9df4", "#187bcd", "#ffffff", "#ffecb3"], {
-            days: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
-            months: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
-            indicator: false,
-            placeholder: "No hay eventos aquí"
-        });
-
-    //Esta linea quita el margen al organizador. Permite utilizar columnas de 50% con bootstrap
-    document.querySelector('#organizerContainer').style.marginLeft = 0;
-    //Esta línea quita los límites de tamaño del calendario.
-    document.querySelectorAll('.cjslib-calendar.cjslib-size-small').forEach(item => {
-        item.style.width = "100%";
-        item.style.height = "100%";
-    });
-
     //Datos dummy del organizador
-    var data = {
-        2017: {
-            12: {
-                25: [{
-                        startTime: "00:00",
-                        endTime: "24:00",
-                        text: "Christmas Day"
-                    },
-                    {
-                        startTime: "00:00",
-                        endTime: "24:00",
-                        text: "Christssssmas Day"
-                    }
-                ]
-            }
-        }
-    };
+    /*var data = {
+    "2023": {
+    01: {
+    25: [{
+    startTime: "00:00",
+    endTime: "24:00",
+    text: "Christmas Day"
+    },
+    {
+    startTime: "00:00",
+    endTime: "24:00",
+    text: "Christssssmas Day"
+    },
+    {
+    startTime: "00:00",
+    endTime: "24:00",
+    text: "Christmas Day"
+    },
+    {
+    startTime: "00:00",
+    endTime: "24:00",
+    text: "Christssssmas Day"
+    },
+    {
+    startTime: "00:00",
+    endTime: "24:00",
+    text: "Christmas Day"
+    },
+    {
+    startTime: "00:00",
+    endTime: "24:00",
+    text: "Christssssmas Day"
+    },
+    {
+    startTime: "00:00",
+    endTime: "24:00",
+    text: "Christmas Day"
+    },
+    {
+    startTime: "00:00",
+    endTime: "24:00",
+    text: "Christssssmas Day"
+    }
+    ]
+    }
+    }
+    };*/
 
     //Aquí se renderiza el organizador
-    var organizer = new Organizer("organizerContainer", calendar, data);
 
-    //Este bloque quita los límites de tamaño del organizador
-    document.querySelectorAll('.cjslib-events.cjslib-size-small').forEach(item => {
-        item.style.width = "100%";
-        item.style.height = "100%";
-    });
+    $("document").ready(function() {
+        $("#boton").on("click", btnfun);
+        //Creación del calendario
+        calendario = crearCalendario();
+        //Esta línea quita los límites de tamaño del calendario.
+        ajustarCalendario();
+        //Creación de datos
+        var data = <?php echo $aJSON; ?>;
+        //Creación del organizador
+        organizador = crearOrganizador(calendario, data);
+        //Esta linea quita el margen al organizador. Permite utilizar columnas de 50% con bootstrap
+        ajustarOrganizador();
+        ajustarEventos();
+    })
+
+    function ajustarEventos() {
+        $(".cjslib-list li").on("click", mostrarModal);
+    }
+
+    function mostrarModal() {
+        var modal = new bootstrap.Modal(document.getElementById("modalInicial"));
+        modal.show();
+    }
+
+    function ajustarCalendario() {
+        $(".cjslib-calendar.cjslib-size-small").css({
+            "width": "100%",
+            "height": "100%"
+        })
+    }
+
+    function crearCalendario() {
+        var calendar = new Calendar("calendarContainer", "small",
+            ["Lunes", 3],
+            ["#2a9df4", "#187bcd", "#ffffff", "#ffecb3"], {
+                days: ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"],
+                months: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
+                indicator: false,
+                placeholder: "No hay eventos aquí"
+            });
+        return calendar;
+    }
+
+    function crearOrganizador(calendario, datos) {
+        var organizer = new Organizer("organizerContainer", calendario, datos);
+        return organizer;
+    }
+
+    function ajustarOrganizador() {
+        $(".cjslib-date").css("width", "100%");
+        $("#organizerContainer").css("marginLeft", "0");
+        $(".cjslib-events.cjslib-size-small").css({
+            "width": "40vw",
+            "height": "90vh"
+        });
+    }
+
+    function btnfun() {
+        $("#boton").css("border", "10px solid red");
+    }
 </script>

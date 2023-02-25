@@ -27,10 +27,10 @@ function Calendar(id, size, labelSettings, colors, options) {
     this.placeholder = listPlaceholder.outerHTML;
     if (options.placeholder != undefined) this.placeholder = options.placeholder;
 
-    var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    var months = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
     if (options.months != undefined && options.months.length == 12) months = options.months;
 
-    var label = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    var label = ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"];
     if (options.days != undefined && options.days.length == 7) label = options.days;
 
     this.months = months;
@@ -495,7 +495,7 @@ Organizer.prototype.list = function (data) {
     var container = document.createElement("UL");
     for (var i = 0; i < data.length; i++) {
         var listItem = document.createElement("LI");
-        listItem.id = this.id + "-list-item-" + i;
+        listItem.id = this.id + "-list-item-" + data[i].id;
 
         var division = document.createElement("DIV");
 
@@ -600,6 +600,7 @@ Organizer.prototype.showEvents = function (data) {
     }
 
     document.getElementById(this.id + "-list").innerHTML = content;
+    ajustarEventos();
 };
 
 Organizer.prototype.showHistory = function (data) {
@@ -738,4 +739,13 @@ Organizer.prototype.setOnLongClickListener = function (theCase, backCallback, ne
             }
             break;
     }
+}
+
+function ajustarEventos() {
+    $(".cjslib-list li").on("click", mostrarModal);
+}
+
+function mostrarModal() {
+    var modal = new bootstrap.Modal(document.getElementById("exampleModal"));
+    modal.show();
 }

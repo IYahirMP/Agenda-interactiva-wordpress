@@ -51,8 +51,9 @@ class Nutriologa_Agenda_Interactiva_Activator
 		$horario = $wpdb->prefix . "horario";
 		$sqlHorario = "CREATE TABLE IF NOT EXISTS $horario (
 			id int unsigned not null auto_increment,
-			horaInicio datetime,
-			horaFin datetime,
+			dia date,
+			horaInicio time,
+			horaFin time,
 			ubicacion varchar(30),
 			PRIMARY KEY (id)
 		)$charset_collate;";
