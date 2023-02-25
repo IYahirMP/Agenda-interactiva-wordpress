@@ -36,7 +36,8 @@ class Nutriologa_Agenda_Interactiva_Activator
 		$charset_collate = $wpdb->get_charset_collate();
 
 		//Tabla cliente
-		$cliente = $wpdb->prefix . "cliente";
+		$prefijoPlugin = "nac_";
+		$cliente = $wpdb->prefix . $prefijoPlugin . "cliente";
 		$sqlCliente = "CREATE TABLE IF NOT EXISTS $cliente (
 				id int unsigned not null auto_increment,
 				nombre varchar(40),
@@ -47,19 +48,33 @@ class Nutriologa_Agenda_Interactiva_Activator
 				PRIMARY KEY (id)
 			)$charset_collate;";
 
+		//Tabla de ubicaciones
+		$ubicaciones = $wpdb->prefix . $prefijoPlugin . "ubicacion";
+		$sqlUbicacion = "CREATE TABLE IF NOT EXISTS $ubicaciones (
+			id int unsigned not null auto_increment PRIMARY KEY,
+			estado varchar(50),
+			municipio varchar(50),
+			calle varchar(100),
+			colonia varchar(100),
+			num_exterior varchar(20),
+			num_interior varchar(20),
+			telefono_contacto varchar(10)
+		)$charset_collate;";
+
 		//Tabla de horarios
-		$horario = $wpdb->prefix . "horario";
+		$horario = $wpdb->prefix . $prefijoPlugin . "horario";
 		$sqlHorario = "CREATE TABLE IF NOT EXISTS $horario (
 			id int unsigned not null auto_increment,
 			dia date,
 			horaInicio time,
 			horaFin time,
-			ubicacion varchar(30),
-			PRIMARY KEY (id)
+			ubicacion int unsigned not null,
+			PRIMARY KEY (id),
+			FOREIGN KEY (ubicacion) REFERENCES $ubicaciones(id)
 		)$charset_collate;";
 
 		//Tabla de citas
-		$cita = $wpdb->prefix . "cita";
+		$cita = $wpdb->prefix . $prefijoPlugin . "cita";
 		$sqlCita = "CREATE TABLE IF NOT EXISTS $cita (
 			id int unsigned not null auto_increment,
 			asunto varchar(100),
@@ -71,7 +86,7 @@ class Nutriologa_Agenda_Interactiva_Activator
 		)$charset_collate;";
 
 		//Tabla de pagos
-		$pagos = $wpdb->prefix . "pago";
+		$pagos = $wpdb->prefix . $prefijoPlugin . "pago";
 		$sqlPagos = "CREATE TABLE IF NOT EXISTS $pagos (
 			id int unsigned not null auto_increment,
 			cantidad float not null,
@@ -83,6 +98,7 @@ class Nutriologa_Agenda_Interactiva_Activator
 
 		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 		dbDelta($sqlCliente);
+		dbDelta($sqlUbicacion);
 		dbDelta($sqlHorario);
 		dbDelta($sqlCita);
 		dbDelta($sqlPagos);
