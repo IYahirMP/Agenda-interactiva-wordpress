@@ -159,6 +159,7 @@ class Nutriologa_Agenda_Interactiva
 		$this->loader->add_action('admin_enqueue_scripts', $plugin_admin, 'enqueue_styles');
 		$this->loader->add_action('admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts');
 		$this->loader->add_action('admin_menu', $plugin_admin, 'menu_agenda');
+		$this->loader->add_action('wp_ajax_actualizarDatosUbicacion', $plugin_admin, 'actualizarDatosUbicacion');
 	}
 
 	/**
