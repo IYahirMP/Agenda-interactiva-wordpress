@@ -54,6 +54,7 @@ class Nutriologa_Agenda_Interactiva_Activator
 			id int unsigned not null auto_increment PRIMARY KEY,
 			estado varchar(50),
 			municipio varchar(50),
+			localidad varchar(50),
 			calle varchar(100),
 			colonia varchar(100),
 			num_exterior varchar(20),
