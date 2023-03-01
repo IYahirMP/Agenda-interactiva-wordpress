@@ -50,7 +50,7 @@ $resultado = $wpdb->get_results($consulta);
             </div>
         </div>
         <div class="collapse" id="listadoUbicaciones">
-            <ul class="list-group">
+            <ul class="list-group" id="listaUbicaciones">
                 <?php if ($resultado) : foreach ($resultado as $row) : ?>
                         <li class="list-group-item">
                             <div class="row">
@@ -174,7 +174,7 @@ $resultado = $wpdb->get_results($consulta);
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Cerrar</button>
                 </div>
             </div>
         </div>
@@ -245,7 +245,77 @@ $resultado = $wpdb->get_results($consulta);
                 },
                 success: function(response) {
                     console.log("Success", response);
+                    $("#listaUbicaciones").empty();
+                    datos = response.data;
+                    response.data.forEach(function(objeto) {
+                        const listItem = $("<li>", {
+                            class: "list-group-item"
+                        });
 
+                        const renglon = $("<div>", {
+                            class: "row"
+                        });
+
+                        const columnaTexto = $("<div>", {
+                            class: "col-6",
+                            id: "registro" + objeto.id
+                        });
+
+                        var texto = "";
+                        texto += objeto.localidad;
+                        texto += ", ";
+                        texto += objeto.estado;
+                        texto += ", municipio de ";
+                        texto += objeto.municipio;
+                        texto += ", colonia ";
+                        texto += objeto.colonia;
+                        texto += ", calle ";
+                        texto += objeto.calle;
+                        texto += ", numero exterior ";
+                        texto += objeto.num_exterior;
+                        texto += ", numero interior ";
+                        texto += objeto.num_interior;
+                        texto += ", con teléfono de contacto ";
+                        texto += objeto.telefono_contacto;
+                        columnaTexto.text(texto);
+
+                        renglon.append(columnaTexto);
+
+                        const columnaBotones = $("<div>", {
+                            class: "col-1 offset-5",
+                        });
+
+                        const dropDown = $("<div>", {
+                            class: "dropdown"
+                        });
+
+                        const boton = $("<button>", {
+                            class: "btn btn-primary dropdown-toggle",
+                            type: "button",
+                            "data-bs-toggle": "dropdown",
+                            "aria-expanded": "false"
+                        });
+
+                        const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
+                                        <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z" />
+                                    </svg>`;
+
+                        const dropDownMenu = $("<ul>", {
+                            class: "dropdown-menu"
+                        });
+
+                        const botonEditar = `<li><button id="editar` + objeto.id + `" class="dropdown-item" type="button" data-bs-toggle="modal" data-bs-target="#modalEditar" onclick="poblarModal(` + objeto.id + `)">Editar</button></li>`;
+                        const botonEliminar = `<li><button id="eliminar` + objeto.id + `" class="dropdown-item" type="button" data-bs-toggle="modal" data-bs-target="#modalEliminar">Eliminar</button></li>`;
+
+                        dropDownMenu.append(botonEditar).append(botonEliminar);
+                        boton.append(svg);
+                        dropDown.append(boton).append(dropDownMenu);
+                        columnaBotones.append(dropDown);
+                        renglon.append(columnaBotones);
+                        listItem.append(renglon);
+
+                        $("#listaUbicaciones").append(listItem);
+                    });
                 },
                 error: function(xhr, status, error) {
                     console.log("Errror:", error);

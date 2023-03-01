@@ -166,6 +166,9 @@ class Nutriologa_Agenda_Interactiva_Admin
 
 		$wpdb->update($wpdb->prefix . "nac_ubicacion", $datosActualizar, $where);
 
-		wp_send_json_success(array('message' => 'Data updated successfully'));
+		$consulta = "SELECT * FROM {$wpdb->prefix}nac_ubicacion LIMIT 10;";
+		$resultado = $wpdb->get_results($consulta);
+
+		wp_send_json_success($resultado);
 	}
 }
