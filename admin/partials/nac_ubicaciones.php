@@ -15,7 +15,7 @@
 
 <?php
 global  $wpdb;
-$consulta = "SELECT * FROM {$wpdb->prefix}nac_ubicacion LIMIT 10;";
+$consulta = "SELECT * FROM {$wpdb->prefix}nac_ubicacion;";
 $resultado = $wpdb->get_results($consulta);
 ?>
 
@@ -188,9 +188,51 @@ $resultado = $wpdb->get_results($consulta);
                 </div>
                 <div class="modal-body">
                     <div class="text-center">
-                        <p id="guardado">La ubicación ha sido eliminada exitosamente.</p>
+                        <p>La ubicación ha sido eliminada exitosamente.</p>
                         <div id="imagenCheck" class="d-flex justify-content-center">
                             <img style="height:10vh; text-align:center;" src="/wp-content/plugins/nutriologa-agenda-interactiva/admin/images/check.png">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalEspera">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Procesando</h2>
+                </div>
+                <div class="modal-body">
+                    <div class="text-center">
+                        <p>Espere un momento, por favor. Se está procesando la operación</p>
+                        <div id="imagenCheck" class="d-flex justify-content-center">
+                            <img style="height:10vh; text-align:center;" src="/wp-content/plugins/nutriologa-agenda-interactiva/admin/images/wip.png">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalEliminadoError">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Eliminar ubicación</h2>
+                </div>
+                <div class="modal-body">
+                    <div class="text-center">
+                        <p>La ubicación no pudo ser eliminada.</p>
+                        <div id="imagenCheck" class="d-flex justify-content-center">
+                            <img style="height:10vh; text-align:center;" src="/wp-content/plugins/nutriologa-agenda-interactiva/admin/images/cross.png">
                         </div>
                     </div>
                 </div>
@@ -208,9 +250,9 @@ $resultado = $wpdb->get_results($consulta);
                     <h1>Eliminar ubicaci&oacute;n</h1>
                 </div>
                 <div class="modal-body">
-                    <fieldset>
+                    <fieldset class="text-center">
                         <legend>¿Está seguro de que desea eliminar esta ubicaci&oacute;n?</legend>
-                        <div class="d-flex flex-row justify-content-around">
+                        <div class=" d-flex flex-row justify-content-around">
                             <button id="botonEliminar" class="btn btn-primary px-4" data-bs-dismiss="modal">Sí</button>
                             <button class="btn btn-primary px-4" data-bs-dismiss="modal">No</button>
                         </div>
@@ -248,8 +290,7 @@ $resultado = $wpdb->get_results($consulta);
         }
 
         function eliminarDatos(id_elem) {
-            $("#modalEliminado").modal('show');
-
+            $("#modalEspera").modal("show");
             $.ajax({
                 type: "POST",
                 url: ajaxurl,
@@ -260,7 +301,14 @@ $resultado = $wpdb->get_results($consulta);
                     }
                 },
                 success: function(response) {
-                    console.log(response);
+                    if (response.success == true) {
+                        $("#modalEspera").modal("hide");
+                        $("#modalEliminado").modal('show');
+                        actualizarLista(response.data);
+                    } else {
+                        $("#modalEspera").modal("hide");
+                        $("#modalEliminadoError").modal("show");
+                    }
                 },
                 error: function(xhr, status, error) {
                     console.log("Error:", error);

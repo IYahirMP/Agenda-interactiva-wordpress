@@ -166,7 +166,7 @@ class Nutriologa_Agenda_Interactiva_Admin
 
 		$wpdb->update($wpdb->prefix . "nac_ubicacion", $datosActualizar, $where);
 
-		$consulta = "SELECT * FROM {$wpdb->prefix}nac_ubicacion LIMIT 10;";
+		$consulta = "SELECT * FROM {$wpdb->prefix}nac_ubicacion;";
 		$resultado = $wpdb->get_results($consulta);
 
 		wp_send_json_success($resultado);
@@ -179,11 +179,16 @@ class Nutriologa_Agenda_Interactiva_Admin
 		$id = array(
 			'id' => intval($objeto["id"])
 		);
+
 		$resultado = $wpdb->delete($wpdb->prefix . "nac_ubicacion", $id);
 		if (false === $resultado) {
-			echo $wpdb->last_error;
+			wp_send_json_error();
+			wp_die();
 		} else {
-			echo "Registro eliminado correctamente.";
+			$consulta = "SELECT * FROM {$wpdb->prefix}nac_ubicacion LIMIT 10;";
+			$resultado = $wpdb->get_results($consulta);
+			wp_send_json_success($resultado);
+			wp_die();
 		}
 	}
 }
