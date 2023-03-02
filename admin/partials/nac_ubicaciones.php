@@ -84,7 +84,7 @@ $resultado = $wpdb->get_results($consulta);
                                         </button>
                                         <ul class="dropdown-menu">
                                             <li><button id=<?php echo '"editar' . $row->id . '"'; ?> class="dropdown-item" type="button" data-bs-toggle="modal" data-bs-target="#modalEditar" onclick="poblarModal(<?php echo $row->id; ?>)">Editar</button></li>
-                                            <li><button id=<?php echo '"eliminar' . $row->id . '"'; ?> class="dropdown-item" type="button" data-bs-toggle="modal" data-bs-target="#modalEliminar">Eliminar</button></li>
+                                            <li><button id=<?php echo '"eliminar' . $row->id . '"'; ?> class="dropdown-item" type="button" data-bs-toggle="modal" data-bs-target="#modalEliminar" onclick="configurarModalEliminacion(<?php echo $row->id; ?>)">Eliminar</button></li>
                                         </ul>
                                     </div>
                                 </div>
@@ -180,6 +180,27 @@ $resultado = $wpdb->get_results($consulta);
         </div>
     </div>
 
+    <div class="modal fade" id="modalEliminado">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Ubicación eliminada</h2>
+                </div>
+                <div class="modal-body">
+                    <div class="text-center">
+                        <p id="guardado">La ubicación ha sido eliminada exitosamente.</p>
+                        <div id="imagenCheck" class="d-flex justify-content-center">
+                            <img style="height:10vh; text-align:center;" src="/wp-content/plugins/nutriologa-agenda-interactiva/admin/images/check.png">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="modal fade" id="modalEliminar">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -190,7 +211,7 @@ $resultado = $wpdb->get_results($consulta);
                     <fieldset>
                         <legend>¿Está seguro de que desea eliminar esta ubicaci&oacute;n?</legend>
                         <div class="d-flex flex-row justify-content-around">
-                            <button class="btn btn-primary px-4" data-bs-dismiss="modal">Sí</button>
+                            <button id="botonEliminar" class="btn btn-primary px-4" data-bs-dismiss="modal">Sí</button>
                             <button class="btn btn-primary px-4" data-bs-dismiss="modal">No</button>
                         </div>
                     </fieldset>
@@ -220,7 +241,35 @@ $resultado = $wpdb->get_results($consulta);
             $("#telefono").val(objeto.telefono_contacto);
         }
 
-        function actualizarDatos() {
+        function configurarModalEliminacion(id) {
+            $("#botonEliminar").on('click', function() {
+                eliminarDatos(id)
+            });
+        }
+
+        function eliminarDatos(id_elem) {
+            $("#modalEliminado").modal('show');
+
+            $.ajax({
+                type: "POST",
+                url: ajaxurl,
+                data: {
+                    action: "eliminarUbicacion",
+                    data: {
+                        id: id_elem
+                    }
+                },
+                success: function(response) {
+                    console.log(response);
+                },
+                error: function(xhr, status, error) {
+                    console.log("Error:", error);
+
+                }
+            });
+        }
+
+        function actualizarDatos(id) {
             var objeto = {
                 id: $("#id").val(),
                 estado: $("#estado").val(),
@@ -245,81 +294,85 @@ $resultado = $wpdb->get_results($consulta);
                 },
                 success: function(response) {
                     console.log("Success", response);
-                    $("#listaUbicaciones").empty();
                     datos = response.data;
-                    response.data.forEach(function(objeto) {
-                        const listItem = $("<li>", {
-                            class: "list-group-item"
-                        });
+                    actualizarLista(datos);
+                },
+                error: function(xhr, status, error) {
+                    console.log("Error:", error);
+                }
+            });
+        }
 
-                        const renglon = $("<div>", {
-                            class: "row"
-                        });
+        function actualizarLista(data) {
+            $("#listaUbicaciones").empty();
+            data.forEach(function(objeto) {
+                const listItem = $("<li>", {
+                    class: "list-group-item"
+                });
 
-                        const columnaTexto = $("<div>", {
-                            class: "col-6",
-                            id: "registro" + objeto.id
-                        });
+                const renglon = $("<div>", {
+                    class: "row"
+                });
 
-                        var texto = "";
-                        texto += objeto.localidad;
-                        texto += ", ";
-                        texto += objeto.estado;
-                        texto += ", municipio de ";
-                        texto += objeto.municipio;
-                        texto += ", colonia ";
-                        texto += objeto.colonia;
-                        texto += ", calle ";
-                        texto += objeto.calle;
-                        texto += ", numero exterior ";
-                        texto += objeto.num_exterior;
-                        texto += ", numero interior ";
-                        texto += objeto.num_interior;
-                        texto += ", con teléfono de contacto ";
-                        texto += objeto.telefono_contacto;
-                        columnaTexto.text(texto);
+                const columnaTexto = $("<div>", {
+                    class: "col-6",
+                    id: "registro" + objeto.id
+                });
 
-                        renglon.append(columnaTexto);
+                var texto = "";
+                texto += objeto.localidad;
+                texto += ", ";
+                texto += objeto.estado;
+                texto += ", municipio de ";
+                texto += objeto.municipio;
+                texto += ", colonia ";
+                texto += objeto.colonia;
+                texto += ", calle ";
+                texto += objeto.calle;
+                texto += ", numero exterior ";
+                texto += objeto.num_exterior;
+                texto += ", numero interior ";
+                texto += objeto.num_interior;
+                texto += ", con teléfono de contacto ";
+                texto += objeto.telefono_contacto;
+                columnaTexto.text(texto);
 
-                        const columnaBotones = $("<div>", {
-                            class: "col-1 offset-5",
-                        });
+                renglon.append(columnaTexto);
 
-                        const dropDown = $("<div>", {
-                            class: "dropdown"
-                        });
+                const columnaBotones = $("<div>", {
+                    class: "col-1 offset-5",
+                });
 
-                        const boton = $("<button>", {
-                            class: "btn btn-primary dropdown-toggle",
-                            type: "button",
-                            "data-bs-toggle": "dropdown",
-                            "aria-expanded": "false"
-                        });
+                const dropDown = $("<div>", {
+                    class: "dropdown"
+                });
 
-                        const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
+                const boton = $("<button>", {
+                    class: "btn btn-primary dropdown-toggle",
+                    type: "button",
+                    "data-bs-toggle": "dropdown",
+                    "aria-expanded": "false"
+                });
+
+                const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
                                         <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z" />
                                     </svg>`;
 
-                        const dropDownMenu = $("<ul>", {
-                            class: "dropdown-menu"
-                        });
+                const dropDownMenu = $("<ul>", {
+                    class: "dropdown-menu"
+                });
 
-                        const botonEditar = `<li><button id="editar` + objeto.id + `" class="dropdown-item" type="button" data-bs-toggle="modal" data-bs-target="#modalEditar" onclick="poblarModal(` + objeto.id + `)">Editar</button></li>`;
-                        const botonEliminar = `<li><button id="eliminar` + objeto.id + `" class="dropdown-item" type="button" data-bs-toggle="modal" data-bs-target="#modalEliminar">Eliminar</button></li>`;
+                const botonEditar = `<li><button id="editar` + objeto.id + `" class="dropdown-item" type="button" data-bs-toggle="modal" data-bs-target="#modalEditar" onclick="poblarModal(` + objeto.id + `)">Editar</button></li>`;
+                const botonEliminar = `<li><button id="eliminar` + objeto.id + `" class="dropdown-item" type="button" data-bs-toggle="modal" data-bs-target="#modalEliminar">Eliminar</button></li>`;
 
-                        dropDownMenu.append(botonEditar).append(botonEliminar);
-                        boton.append(svg);
-                        dropDown.append(boton).append(dropDownMenu);
-                        columnaBotones.append(dropDown);
-                        renglon.append(columnaBotones);
-                        listItem.append(renglon);
+                dropDownMenu.append(botonEditar).append(botonEliminar);
+                boton.append(svg);
+                dropDown.append(boton).append(dropDownMenu);
+                columnaBotones.append(dropDown);
+                renglon.append(columnaBotones);
+                listItem.append(renglon);
 
-                        $("#listaUbicaciones").append(listItem);
-                    });
-                },
-                error: function(xhr, status, error) {
-                    console.log("Errror:", error);
-                }
+                $("#listaUbicaciones").append(listItem);
             });
         }
     </script>

@@ -171,4 +171,19 @@ class Nutriologa_Agenda_Interactiva_Admin
 
 		wp_send_json_success($resultado);
 	}
+
+	public function eliminarUbicacion()
+	{
+		global $wpdb;
+		$objeto = $_POST["data"];
+		$id = array(
+			'id' => intval($objeto["id"])
+		);
+		$resultado = $wpdb->delete($wpdb->prefix . "nac_ubicacion", $id);
+		if (false === $resultado) {
+			echo $wpdb->last_error;
+		} else {
+			echo "Registro eliminado correctamente.";
+		}
+	}
 }
