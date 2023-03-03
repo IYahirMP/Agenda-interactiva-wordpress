@@ -100,9 +100,9 @@ class Nutriologa_Agenda_Interactiva_Admin
 		 * class.
 		 */
 
-		wp_enqueue_script($this->plugin_name, plugin_dir_url(__FILE__) . 'js/nutriologa-agenda-interactiva-admin.js', array('jquery'), $this->version, false);
+		wp_enqueue_script($this->plugin_name, plugin_dir_url(__FILE__) . 'js/nutriologa-agenda-interactiva-admin.js', array('jquery'), "1.2", false);
 		wp_enqueue_script($this->plugin_name . '-jquery', plugin_dir_url(__FILE__) . "js/jquery-3.6.3.js", array(), $this->version, false);
-		wp_enqueue_script($this->plugin_name . '-bootstrapjs', plugin_dir_url(__FILE__) . "js/bootstrap.bundle.min.js", array(), "v5.3.0-alpha1", false);
+		wp_enqueue_script($this->plugin_name . '-bootstrapjs', plugin_dir_url(__FILE__) . "js/bootstrap.bundle.min.js", array(), "v5.3.0-alpha", false);
 		wp_enqueue_script($this->plugin_name . '-calendarjs', plugin_dir_url(__FILE__) . "js/calendar.js", array('jquery'), "1.5", false);
 	}
 
@@ -164,12 +164,47 @@ class Nutriologa_Agenda_Interactiva_Admin
 			'telefono_contacto' => $objeto['telefono_contacto']
 		);
 
-		$wpdb->update($wpdb->prefix . "nac_ubicacion", $datosActualizar, $where);
+		$actualizado = $wpdb->update($wpdb->prefix . "nac_ubicacion", $datosActualizar, $where);
 
-		$consulta = "SELECT * FROM {$wpdb->prefix}nac_ubicacion;";
-		$resultado = $wpdb->get_results($consulta);
+		if (false == $actualizado) {
+			wp_send_json_error();
+			wp_die();
+		} else {
+			$consulta = "SELECT * FROM {$wpdb->prefix}nac_ubicacion;";
+			$resultado = $wpdb->get_results($consulta);
+			wp_send_json_success($resultado);
+			wp_die();
+		}
+	}
 
-		wp_send_json_success($resultado);
+	public function crearUbicacion()
+	{
+		global $wpdb;
+
+		$objeto = $_POST["data"];
+
+		$registro = array(
+			'estado' => $objeto["estado"],
+			'municipio' => $objeto["municipio"],
+			'localidad' => $objeto["localidad"],
+			'calle' => $objeto['calle'],
+			'colonia' => $objeto['colonia'],
+			'num_exterior' => $objeto['num_exterior'],
+			'num_interior' => $objeto['num_interior'],
+			'telefono_contacto' => $objeto['telefono_contacto']
+		);
+
+		$creado = $wpdb->insert($wpdb->prefix . "nac_ubicacion", $registro);
+
+		if (false == $creado) {
+			wp_send_json_error();
+			wp_die();
+		} else {
+			$consulta = "SELECT * FROM {$wpdb->prefix}nac_ubicacion;";
+			$resultado = $wpdb->get_results($consulta);
+			wp_send_json_success($resultado);
+			wp_die();
+		}
 	}
 
 	public function eliminarUbicacion()
@@ -181,11 +216,11 @@ class Nutriologa_Agenda_Interactiva_Admin
 		);
 
 		$resultado = $wpdb->delete($wpdb->prefix . "nac_ubicacion", $id);
-		if (false === $resultado) {
+		if (false == $resultado) {
 			wp_send_json_error();
 			wp_die();
 		} else {
-			$consulta = "SELECT * FROM {$wpdb->prefix}nac_ubicacion LIMIT 10;";
+			$consulta = "SELECT * FROM {$wpdb->prefix}nac_ubicacion;";
 			$resultado = $wpdb->get_results($consulta);
 			wp_send_json_success($resultado);
 			wp_die();
