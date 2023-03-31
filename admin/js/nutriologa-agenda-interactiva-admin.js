@@ -128,6 +128,18 @@
         }
 
         function actualizarLista(data) {
+            if(data.length == 0){
+                $("#listaUbicaciones").empty();
+                let elemento = `<li class="list-group-item">
+                <div class="row">
+                    <div class="col-6" id="noReg">
+                        No hay registros
+                    </div>
+                </div>
+            </li>`;
+                $("#listaUbicaciones").append(elemento);
+                return;
+            }
             $("#listaUbicaciones").empty();
             data.forEach(function(objeto) {
                 const listItem = $("<li>", {

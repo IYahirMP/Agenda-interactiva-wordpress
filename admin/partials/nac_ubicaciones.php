@@ -90,8 +90,17 @@ $resultado = $wpdb->get_results($consulta);
                                 </div>
                             </div>
                         </li>
-                <?php
+                    <?php
                     endforeach;
+                else : ?>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-6" id="noReg">
+                                No se ha encontrado ninguna ubicación.
+                            </div>
+                        </div>
+                    </li>
+                <?php
                 endif;
                 ?>
             </ul>
@@ -110,45 +119,45 @@ $resultado = $wpdb->get_results($consulta);
             </div>
         </div>
         <div class="collapse show" id="crearUbicacion">
-            <div class="row">
-                <form>
-                    <fieldset>
-                        <div class="mb-3">
+            <form>
+                <fieldset>
+                    <div class="row">
+                        <div class="mb-3 col-md-4">
                             <label for="estado2" class="form-label">Estado</label>
                             <input class="form-control" type="text" id="estado2" aria-describedby="ayudaEstado" required>
                             <div id="ayudaEstado" class="form-text">Ej. Guerrero, México, Ciudad de México.</div>
                         </div>
-                        <div class="mb-3">
+                        <div class="mb-3 col-md-4">
                             <label for="municipio2" class="form-label">Municipio</label>
                             <input class="form-control" type="text" id="municipio2" aria-describedby="ayudaMunicipio" required>
                             <div id="ayudaMunicipio" class="form-text">Ej. Pungarabato, Coyuca de Catalán, San Marcos.</div>
                         </div>
-                        <div class="mb-3">
+                        <div class="mb-3 col-md-4">
                             <label for="localidad2" class="form-label">Localidad</label>
                             <input class="form-control" type="text" id="localidad2" aria-describedby="ayudaLocalidad" required>
                             <div id="ayudaLocalidad" class="form-text">Ej. Ciudad Altamirano, Tanganhuato, Santa Bárbara.</div>
                         </div>
-                        <div class="mb-3">
+                        <div class="mb-3 col-md-6">
                             <label for="calle2" class="form-label">Calle</label>
                             <input class="form-control" type="text" id="calle2" aria-describedby="ayudaCalle">
                             <div id="ayudaCalle" class="form-text">Ej. Benito Juarez Poniente.<br>Si no tiene calle, dejar en blanco.</div>
                         </div>
-                        <div class="mb-3">
+                        <div class="mb-3 col-md-6">
                             <label for="colonia2" class="form-label">Colonia</label>
                             <input class="form-control" type="text" id="colonia2" aria-describedby="ayudaColonia" required>
                             <div id="ayudaColonia" class="form-text">Ej. Centro, Doctores.</div>
                         </div>
-                        <div class="mb-3">
+                        <div class="mb-3 col-md-3">
                             <label for="num_exterior2" class="form-label">N&uacute;mero exterior</label>
                             <input class="form-control" type="text" id="num_exterior2" aria-describedby="ayudaNumExterior">
                             <div id="ayudaNumExterior" class="form-text">Ej. 311.<br>Si no tiene n&uacute;mero exterior, dejar en blanco.</div>
                         </div>
-                        <div class="mb-3">
+                        <div class="mb-3 col-md-3">
                             <label for="num_interior2" class="form-label">N&uacute;mero interior</label>
                             <input class="form-control" type="text" id="num_interior2" aria-describedby="ayudaNumInterior">
                             <div id="ayudaNumInterior" class="form-text">Ej. 311A, 412B, ...<br>Si no tiene n&uacute;mero interior, dejar en blanco.</div>
                         </div>
-                        <div class="mb-3">
+                        <div class="mb-3 col-md-3">
                             <label for="telefono2" class="form-label">Teléfono de contacto</label>
                             <input class="form-control" type="text" id="telefono2" aria-describedby="ayudaTelefono">
                             <div id="ayudaTelefono" class="form-text">Ej. 7331567430.<br>Si no tiene n&uacute;mero de Teléefono, dejar en blanco.</div>
@@ -156,9 +165,9 @@ $resultado = $wpdb->get_results($consulta);
                         <div class="d-flex flex-row-reverse">
                             <button class="btn btn-primary" type="button" onclick="crearUbicacion()">Crear nueva ubicación</button>
                         </div>
-                    </fieldset>
-                </form>
-            </div>
+                    </div>
+                </fieldset>
+            </form>
         </div>
     </div>
 
