@@ -1,5 +1,5 @@
-
-        function poblarModal(id) {
+// Las funciones en esta parte son usadas en la parte de ubicaciones
+function poblarModal(id) {
             var objeto = null;
             datos.some(function(dato) {
                 if (id == dato.id) {
@@ -211,3 +211,5 @@
                 $("#listaUbicaciones").append(listItem);
             });
         }
+
+//A partir de aquí, las funciones son usadas en la parte de calendario

@@ -14,90 +14,6 @@
 ?>
 
 <?php
-//echo json_encode($a);
-
-//$hoy = date("Y-m-d");
-/*$consulta = "INSERT INTO $horario(dia, horaInicio, horaFin, ubicacion) values";
-    for ($i = 0; $i < 1000; $i++) {
-        $hora = date("H:i:s");
-        if ($i < 999) {
-            $consulta .= "('$hoy', '$hora', '$hora', 'altamirano'),";
-        } else {
-            $consulta .= "('$hoy', '$hora', '$hora', 'altamirano');";
-        }
-    }*/
-/*$consulta = "INSERT INTO $cliente(nombre, apellidoPaterno, apellidoMaterno, telefono, correo) values";
-    for ($i = 0; $i < 1000; $i++) {
-        if ($i < 999) {
-            $consulta .= "('Ivan Yahir', 'Mojica', 'Pineda', '1231231231', 'iyahirmopi@gmail.com'),";
-        } else {
-            $consulta .= "('Ivan Yahir', 'Mojica', 'Pineda', '1231231231', 'iyahirmopi@gmail.com');";
-        }
-    }*/
-
-/*$consulta = "INSERT INTO $cita(asunto, cliente, horario) values";
-    for ($i = 1; $i < 1000; $i++) {
-        if ($i < 999) {
-            $consulta .= "('Cita con cliente', '$i', '$i'),";
-        } else {
-            $consulta .= "('Cita con cliente', '$i', '$i');";
-        }
-    }*/
-
-/* echo $consulta;
-    include_once ABSPATH . "wp-admin/includes/upgrade.php";
-    dbDelta($consulta);*/
-
-global $wpdb;
-$mes = isset($_GET["mes"]) ? $_GET["mes"] : -1;
-$anio = isset($_GET["anio"]) ? $_GET["anio"] : -1;
-if ($mes == -1 || $anio == -1) {
-    die;
-}
-
-if ($mes < 10) {
-    $mes = "0$mes";
-}
-
-if ($anio < 100) {
-    $anio = "20$anio";
-}
-
-$fecha = "$anio-$mes-00";
-$mes = $mes + 1;
-$fechap = "$anio-$mes-00";
-
-$cita = $wpdb->prefix . "cita";
-$cliente = $wpdb->prefix . "cliente";
-$horario = $wpdb->prefix . "horario";
-$consulta = "SELECT wp_cita.id as id, nombre, apellidoPaterno, apellidoMaterno , dia, horaInicio, horaFin
-                    FROM $cita   JOIN $horario ON $cita.horario = $horario.id
-                                JOIN $cliente ON $cliente.id = $cita.cliente
-                                WHERE DATE(dia) >= '$fecha' AND DATE(dia) < '$fechap'";
-$eventos = $wpdb->get_results($consulta);
-
-$dia = "1";
-
-$mes = $mes - 1;
-$a = new stdClass();
-$a->$anio = new stdClass();
-$a->$anio->$mes = new stdClass();
-$a->$anio->$mes->$dia = array();
-
-$i = 0;
-foreach ($eventos as $evento => $objeto) {
-    $a->$anio->$mes->$dia[$i] = new stdClass();
-    $a->$anio->$mes->$dia[$i]->id = $objeto->id;
-    $a->$anio->$mes->$dia[$i]->startTime = $objeto->horaInicio;
-    $a->$anio->$mes->$dia[$i]->endTime = $objeto->horaFin;
-    $a->$anio->$mes->$dia[$i]->text = "Cita con " . $objeto->nombre . " " . $objeto->apellidoPaterno . " " . $objeto->apellidoMaterno;
-    $a->$anio->$mes->$dia[$i]->nombre = $objeto->nombre;
-    $a->$anio->$mes->$dia[$i]->apellidoPaterno = $objeto->apellidoPaterno;
-    $a->$anio->$mes->$dia[$i]->apellidoMaterno = $objeto->apellidoMaterno;
-    $i++;
-}
-
-$aJSON = json_encode($a);
 ?>
 
 <!-- This file should primarily consist of HTML with a little bit of PHP. -->
@@ -188,70 +104,23 @@ $aJSON = json_encode($a);
     </div>
 </div>
 <script>
-    //Datos dummy del organizador
-    /*var data = {
-    "2023": {
-    01: {
-    25: [{
-    startTime: "00:00",
-    endTime: "24:00",
-    text: "Christmas Day"
-    },
-    {
-    startTime: "00:00",
-    endTime: "24:00",
-    text: "Christssssmas Day"
-    },
-    {
-    startTime: "00:00",
-    endTime: "24:00",
-    text: "Christmas Day"
-    },
-    {
-    startTime: "00:00",
-    endTime: "24:00",
-    text: "Christssssmas Day"
-    },
-    {
-    startTime: "00:00",
-    endTime: "24:00",
-    text: "Christmas Day"
-    },
-    {
-    startTime: "00:00",
-    endTime: "24:00",
-    text: "Christssssmas Day"
-    },
-    {
-    startTime: "00:00",
-    endTime: "24:00",
-    text: "Christmas Day"
-    },
-    {
-    startTime: "00:00",
-    endTime: "24:00",
-    text: "Christssssmas Day"
-    }
-    ]
-    }
-    }
-    };*/
-
     //Aquí se renderiza el organizador
 
     $("document").ready(function() {
+        obtenerDatosCalendario();
         $("#boton").on("click", btnfun);
         //Creación del calendario
         calendario = crearCalendario();
         //Esta línea quita los límites de tamaño del calendario.
         ajustarCalendario();
         //Creación de datos
-        var data = <?php echo $aJSON; ?>;
+        //var data = <?php //echo $aJSON; 
+                        ?>;
         //Creación del organizador
-        organizador = crearOrganizador(calendario, data);
+        //organizador = crearOrganizador(calendario, data);
         //Esta linea quita el margen al organizador. Permite utilizar columnas de 50% con bootstrap
-        ajustarOrganizador();
-        ajustarEventos();
+        //ajustarOrganizador();
+        //ajustarEventos();
     })
 
     function ajustarEventos() {
@@ -298,5 +167,37 @@ $aJSON = json_encode($a);
 
     function btnfun() {
         $("#boton").css("border", "10px solid red");
+    }
+
+    function escucharCambioMes(calendario) {
+        calendario.setOnClickListener('month-slider',
+            function() {
+
+            },
+            function() {
+
+            }
+        );
+    }
+
+    function obtenerDatosCalendario() {
+        $.ajax({
+            type: "POST",
+            url: ajaxurl,
+            data: {
+                action: 'obtenerDatosCalendario'
+            },
+            success: function(response) {
+                $("#modalEspera").modal('hide');
+                if (response.success == true) {
+                    console.log(response.data);
+                } else {
+                    $("#modalCrearError").modal('show');
+                }
+            },
+            error: function(xhr, status, error) {
+                console.log("Error:", error);
+            }
+        });
     }
 </script>
