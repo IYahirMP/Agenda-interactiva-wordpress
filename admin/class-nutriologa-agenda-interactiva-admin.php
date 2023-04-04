@@ -232,8 +232,8 @@ class Nutriologa_Agenda_Interactiva_Admin
 		global $wpdb;
 		//$mes = isset($_GET["mes"]) ? $_GET["mes"] : -1;
 		//$anio = isset($_GET["anio"]) ? $_GET["anio"] : -1;
-		$mes = 2;
-		$anio = 2023;
+		$mes = "3";
+		$anio = "2023";
 		if ($mes == -1 || $anio == -1) {
 			die;
 		}
@@ -250,10 +250,11 @@ class Nutriologa_Agenda_Interactiva_Admin
 		$mes = $mes + 1;
 		$fechap = "$anio-$mes-00";
 
-		$cita = $wpdb->prefix . "cita";
-		$cliente = $wpdb->prefix . "cliente";
-		$horario = $wpdb->prefix . "horario";
-		$consulta = "SELECT wp_cita.id as id, nombre, apellidoPaterno, apellidoMaterno , dia, horaInicio, horaFin
+		$prefix = $wpdb->prefix . "nac_";
+		$cita = $prefix . "cita";
+		$cliente = $prefix . "cliente";
+		$horario = $prefix . "horario";
+		$consulta = "SELECT $cita.id as id, nombre, apellidoPaterno, apellidoMaterno , dia, horaInicio, horaFin
                     FROM $cita   JOIN $horario ON $cita.horario = $horario.id
                                 JOIN $cliente ON $cliente.id = $cita.cliente
                                 WHERE DATE(dia) >= '$fecha' AND DATE(dia) < '$fechap'";

@@ -106,21 +106,24 @@
 <script>
     //Aquí se renderiza el organizador
 
-    $("document").ready(function() {
-        obtenerDatosCalendario();
+    $("document").ready(async function() {
         $("#boton").on("click", btnfun);
         //Creación del calendario
         calendario = crearCalendario();
         //Esta línea quita los límites de tamaño del calendario.
         ajustarCalendario();
         //Creación de datos
-        //var data = <?php //echo $aJSON; 
-                        ?>;
+        var data = await obtenerDatosCalendario();
+        data = JSON.parse(data);
+        if (data == "No data") {
+            return;
+        }
         //Creación del organizador
-        //organizador = crearOrganizador(calendario, data);
+        console.log(data);
+        organizador = crearOrganizador(calendario, data);
         //Esta linea quita el margen al organizador. Permite utilizar columnas de 50% con bootstrap
-        //ajustarOrganizador();
-        //ajustarEventos();
+        ajustarOrganizador();
+        ajustarEventos();
     })
 
     function ajustarEventos() {
@@ -180,24 +183,24 @@
         );
     }
 
-    function obtenerDatosCalendario() {
-        $.ajax({
-            type: "POST",
-            url: ajaxurl,
-            data: {
-                action: 'obtenerDatosCalendario'
-            },
-            success: function(response) {
-                $("#modalEspera").modal('hide');
-                if (response.success == true) {
-                    console.log(response.data);
-                } else {
-                    $("#modalCrearError").modal('show');
+    async function obtenerDatosCalendario() {
+        try {
+            const response = await $.ajax({
+                type: "POST",
+                url: ajaxurl,
+                data: {
+                    action: 'obtenerDatosCalendario'
                 }
-            },
-            error: function(xhr, status, error) {
-                console.log("Error:", error);
+            });
+            if (response.success == true) {
+                return response.data;
+            } else {
+                console.log("Error al obtener datos");
+                return "No data";
             }
-        });
+        } catch (error) {
+            console.log("Error:", error);
+            return "No data";
+        }
     }
 </script>
