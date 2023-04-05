@@ -232,23 +232,22 @@ class Nutriologa_Agenda_Interactiva_Admin
 		global $wpdb;
 		//$mes = isset($_GET["mes"]) ? $_GET["mes"] : -1;
 		//$anio = isset($_GET["anio"]) ? $_GET["anio"] : -1;
-		$mes = "3";
+		$mes = 3;
+		$mesSig = $mes + 1;
 		$anio = "2023";
 		if ($mes == -1 || $anio == -1) {
 			die;
 		}
 
-		if ($mes < 10) {
-			$mes = "0$mes";
-		}
+		$mes = ($mes < 10) ? "0$mes" : $mes;
+		$mesSig = ($mesSig < 10) ? "0$mesSig" : $mesSig;
 
 		if ($anio < 100) {
 			$anio = "20$anio";
 		}
 
-		$fecha = "$anio-$mes-00";
-		$mes = $mes + 1;
-		$fechap = "$anio-$mes-00";
+		$fecha = "$anio-$mes-01";
+		$fechap = "$anio-$mesSig-01";
 
 		$prefix = $wpdb->prefix . "nac_";
 		$cita = $prefix . "cita";
@@ -257,28 +256,30 @@ class Nutriologa_Agenda_Interactiva_Admin
 		$consulta = "SELECT $cita.id as id, nombre, apellidoPaterno, apellidoMaterno , dia, horaInicio, horaFin
                     FROM $cita   JOIN $horario ON $cita.horario = $horario.id
                                 JOIN $cliente ON $cliente.id = $cita.cliente
-                                WHERE DATE(dia) >= '$fecha' AND DATE(dia) < '$fechap'";
+                                WHERE dia >= '$fecha' AND dia < '$fechap'";
 		$eventos = $wpdb->get_results($consulta);
 
 		$dia = "1";
-
-		$mes = $mes - 1;
+		$mes = (intval($mes) < 10) ? $mes[1] : $mes;
 		$a = new stdClass();
 		$a->$anio = new stdClass();
 		$a->$anio->$mes = new stdClass();
 		$a->$anio->$mes->$dia = array();
 
-		$i = 0;
 		foreach ($eventos as $evento => $objeto) {
-			$a->$anio->$mes->$dia[$i] = new stdClass();
-			$a->$anio->$mes->$dia[$i]->id = $objeto->id;
-			$a->$anio->$mes->$dia[$i]->startTime = $objeto->horaInicio;
-			$a->$anio->$mes->$dia[$i]->endTime = $objeto->horaFin;
-			$a->$anio->$mes->$dia[$i]->text = "Cita con " . $objeto->nombre . " " . $objeto->apellidoPaterno . " " . $objeto->apellidoMaterno;
-			$a->$anio->$mes->$dia[$i]->nombre = $objeto->nombre;
-			$a->$anio->$mes->$dia[$i]->apellidoPaterno = $objeto->apellidoPaterno;
-			$a->$anio->$mes->$dia[$i]->apellidoMaterno = $objeto->apellidoMaterno;
-			$i++;
+			if ($objeto->dia[8] == 0)
+				$dia = $objeto->dia[9];
+			else
+				$dia = $objeto->dia[8] . $objeto->dia[9];
+			$current = $a->$anio->$mes->$dia[] = new stdClass();
+			$current->id = $objeto->id;
+			$current->dia = $objeto->dia;
+			$current->startTime = $objeto->horaInicio;
+			$current->endTime = $objeto->horaFin;
+			$current->text = "Cita con " . $objeto->nombre . " " . $objeto->apellidoPaterno . " " . $objeto->apellidoMaterno;
+			$current->nombre = $objeto->nombre;
+			$current->apellidoPaterno = $objeto->apellidoPaterno;
+			$current->apellidoMaterno = $objeto->apellidoMaterno;
 		}
 
 		$aJSON = json_encode($a);
