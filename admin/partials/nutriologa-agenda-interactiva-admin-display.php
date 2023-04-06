@@ -113,7 +113,7 @@
         //Esta línea quita los límites de tamaño del calendario.
         ajustarCalendario();
         //Creación de datos
-        var data = await obtenerDatosCalendario();
+        var data = await obtenerDatosCalendario(calendario);
         data = JSON.parse(data);
         if (data == "No data") {
             return;
@@ -121,6 +121,7 @@
         //Creación del organizador
         console.log(data);
         organizador = crearOrganizador(calendario, data);
+        escucharCambioMes(organizador);
         //Esta linea quita el margen al organizador. Permite utilizar columnas de 50% con bootstrap
         ajustarOrganizador();
         ajustarEventos();
@@ -172,27 +173,31 @@
         $("#boton").css("border", "10px solid red");
     }
 
-    function escucharCambioMes(calendario) {
+    function escucharCambioMes(organizador) {
         calendario.setOnClickListener('month-slider',
-            function() {
-
-            },
-            function() {
-
-            }
+            async function() {
+                    let datos = await obtenerDatosCalendario(organizador.calendar);
+                    organizador.data = JSON.parse(datos);
+                },
+                async function() {
+                    let datos = await obtenerDatosCalendario(organizador.calendar);
+                    organizador.data = JSON.parse(datos);
+                }
         );
     }
 
-    async function obtenerDatosCalendario() {
+    async function obtenerDatosCalendario(calendario) {
         try {
             const response = await $.ajax({
                 type: "POST",
                 url: ajaxurl,
                 data: {
-                    action: 'obtenerDatosCalendario'
+                    action: 'obtenerDatosCalendario',
+                    data: calendario.date.toISOString()
                 }
             });
             if (response.success == true) {
+                console.log(response.data)
                 return response.data;
             } else {
                 console.log("Error al obtener datos");

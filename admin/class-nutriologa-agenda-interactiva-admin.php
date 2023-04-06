@@ -230,21 +230,18 @@ class Nutriologa_Agenda_Interactiva_Admin
 	public function obtenerDatosCalendario()
 	{
 		global $wpdb;
-		//$mes = isset($_GET["mes"]) ? $_GET["mes"] : -1;
-		//$anio = isset($_GET["anio"]) ? $_GET["anio"] : -1;
-		$mes = 3;
-		$mesSig = $mes + 1;
-		$anio = "2023";
+		$f = $_POST["data"];
+
+		$mes = intval($f[5] . $f[6]);
+		$mesSig = intval($mes) + 1;
+		$anio = intval($f[0] . $f[1] . $f[2] . $f[3]);
+
 		if ($mes == -1 || $anio == -1) {
 			die;
 		}
 
 		$mes = ($mes < 10) ? "0$mes" : $mes;
 		$mesSig = ($mesSig < 10) ? "0$mesSig" : $mesSig;
-
-		if ($anio < 100) {
-			$anio = "20$anio";
-		}
 
 		$fecha = "$anio-$mes-01";
 		$fechap = "$anio-$mesSig-01";
