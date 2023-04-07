@@ -19,90 +19,37 @@
 <!-- This file should primarily consist of HTML with a little bit of PHP. -->
 <h1 hidden>Agenda de la nutrióloga</h1>
 
+<style>
+    #espera {
+        width: 40vw;
+        height: 90vh;
+        background-color: #f6f6f6;
+        display: flex;
+        flex-flow: column nowrap;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .parrafo-espera {
+        flex: 0 1 5vw;
+        font-size: 3rem;
+    }
+</style>
+
 <div class="row">
     <div id="calendarContainer" class="col-md-6 col-sm-12"></div>
-    <div id="organizerContainer" class="col-md-6 col-sm-12" style="margin-left: 8px;"></div>
+    <div id="organizerContainer" class="col-md-6 col-sm-12" style="">
+        <div id="espera" hidden="">
+            <p class="parrafo-espera">
+                Cargando datos...
+            </p>
+        </div>
+    </div>
 </div>
 
 <!-- Modal -->
-<div class="modal fade" id="modalInicial" tabindex="-1" aria-labelledby="modalInicialLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="modalInicialLabel">Acciones sobre el registro</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body d-flex flex-row justify-content-around">
-                <button type="button" class="btn btn-primary" data-bs-target="#modalRegistro" data-bs-toggle="modal">Modificar</button>
-                <button type="button" class="btn btn-danger" data-bs-target="#modalEliminar" data-bs-toggle="modal">Eliminar</button>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-            </div>
-        </div>
-    </div>
-</div>
+<?php include "nac_modales_calendario.php"; ?>
 
-<div class="modal fade" id="modalRegistro" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1>Modificar el registro</h1>
-            </div>
-            <div class="modal-body">
-                <form>
-                    <fieldset>
-                        <legend>Detalles de la cita</legend>
-                        <div class="container">
-                            <div class="row">
-                                <div class="col align-self-center justify-content-evenly">
-                                    <div class="row m-1">
-                                        <label for="nombre">Nombre:</label>
-                                    </div>
-                                    <div class="row m-1">
-                                        <label for="fecha">Fecha y hora:</label>
-                                    </div>
-                                </div>
-                                <div class="col">
-                                    <div class="row m-1">
-                                        <input type="text" id="nombre">
-                                    </div>
-                                    <div class="row m-1">
-                                        <input type="datetime-local" id="fecha">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </fieldset>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-target="#modalInicial" data-bs-toggle="modal">Regresar</button>
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                <button type="button" class="btn btn-primary">Guardar cambios</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" id="modalEliminar">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1>Eliminar cita</h1>
-            </div>
-            <div class="modal-body">
-                <fieldset>
-                    <legend>¿Está seguro de que desea eliminar esta cita?</legend>
-                    <div class="d-flex flex-row justify-content-around">
-                        <button class="btn btn-primary px-4" data-bs-dismiss="modal">Sí</button>
-                        <button class="btn btn-primary px-4" data-bs-target="#modalInicial" data-bs-toggle="modal">No</button>
-                    </div>
-                </fieldset>
-            </div>
-        </div>
-    </div>
-</div>
 <script>
     //Aquí se renderiza el organizador
 
@@ -138,8 +85,8 @@
 
     function ajustarCalendario() {
         $(".cjslib-calendar.cjslib-size-small").css({
-            "width": "100%",
-            "height": "100%"
+            "width": "40vw",
+            "height": "90vh"
         })
     }
 
@@ -187,6 +134,10 @@
     }
 
     async function obtenerDatosCalendario(calendario) {
+        $(".cjslib-events.cjslib-size-small").attr({
+            "hidden": ""
+        });
+        document.querySelector("#espera").removeAttribute("hidden");
         try {
             const response = await $.ajax({
                 type: "POST",
@@ -198,6 +149,8 @@
             });
             if (response.success == true) {
                 console.log(response.data)
+                document.querySelector("#espera").setAttribute("hidden", "hidden");
+                $(".cjslib-events.cjslib-size-small").removeAttr("hidden");
                 return response.data;
             } else {
                 console.log("Error al obtener datos");
