@@ -352,7 +352,7 @@ Organizer.prototype = {
                 this.update();
             } else {
                 this.calendar.back('month');
-                this.changeDateTo(lastDay);
+                this.changeDateTo(previousLastDay);
 
                 var organizerInstance = this;
                 organizerInstance.onMonthChange(function () {
@@ -666,13 +666,29 @@ Organizer.prototype.setOnClickListener = function (theCase, backCallback, nextCa
             }
             break;
         case "day-slider":
-            document.getElementById(organizerId + "-day-back").onclick = function () {
+            document.getElementById(organizerId + "-day-back").onclick = async function () {
+                let current_date = organizerInstance.calendar.date.toISOString();
                 organizerInstance.back('day');
-                backCallback();
+                let next_date = organizerInstance.calendar.date.toISOString();
+
+                let current_month = current_date[5] + current_date[6];
+                let next_month = next_date[5] + next_date[6];
+                if (current_month != next_month){
+                    await backCallback();
+                    organizerInstance.showEvents();
+                }
             };
-            document.getElementById(organizerId + "-day-next").onclick = function () {
+            document.getElementById(organizerId + "-day-next").onclick = async function () {
+                let current_date = organizerInstance.calendar.date.toISOString();
                 organizerInstance.next('day');
-                nextCallback();
+                let next_date = organizerInstance.calendar.date.toISOString();
+
+                let current_month = current_date[5] + current_date[6];
+                let next_month = next_date[5] + next_date[6];
+                if (current_month != next_month){
+                    await nextCallback();
+                    organizerInstance.showEvents();
+                }
             };
             break;
         case "month-slider":

@@ -52,7 +52,6 @@
 
 <script>
     //Aquí se renderiza el organizador
-
     $("document").ready(async function() {
         $("#boton").on("click", btnfun);
         //Creación del calendario
@@ -121,16 +120,12 @@
     }
 
     function escucharCambioMes(organizador) {
-        calendario.setOnClickListener('month-slider',
-            async function() {
-                    let datos = await obtenerDatosCalendario(organizador.calendar);
-                    organizador.data = JSON.parse(datos);
-                },
-                async function() {
-                    let datos = await obtenerDatosCalendario(organizador.calendar);
-                    organizador.data = JSON.parse(datos);
-                }
-        );
+        obtenerDatos = async function() {
+            let datos = await obtenerDatosCalendario(organizador.calendar);
+            organizador.data = JSON.parse(datos);
+        };
+        organizador.setOnClickListener('month-slider', obtenerDatos, obtenerDatos);
+        organizador.setOnClickListener('day-slider', obtenerDatos, obtenerDatos);
     }
 
     async function obtenerDatosCalendario(calendario) {
