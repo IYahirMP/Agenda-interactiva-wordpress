@@ -124,6 +124,7 @@
             let datos = await obtenerDatosCalendario(organizador.calendar);
             organizador.data = JSON.parse(datos);
         };
+        organizador.setOnClickListener('days-blocks', obtenerDatos, obtenerDatos);
         organizador.setOnClickListener('month-slider', obtenerDatos, obtenerDatos);
         organizador.setOnClickListener('day-slider', obtenerDatos, obtenerDatos);
     }

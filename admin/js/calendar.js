@@ -400,7 +400,7 @@ Organizer.prototype = {
             });
         }
     },
-    changeDateTo: function changeDateTo(theDay, theBlock) {
+    changeDateTo: async function changeDateTo(theDay, theBlock) {
         this.clearHistory();
 
         var changedMonth = this.calendar.changeDateTo(theDay, theBlock);
@@ -412,7 +412,7 @@ Organizer.prototype = {
                     organizerInstance.indicateEvents();
                 });
             } else organizerInstance.update();
-        }, 1);
+        }, 1000);
     },
     addDate: function changeDateTo(theDay, theBlock) {
         this.showHistory();
@@ -420,13 +420,11 @@ Organizer.prototype = {
         var changedMonth = this.calendar.changeDateTo(theDay, theBlock);
 
         var organizerInstance = this;
-        setTimeout(function () {
-            if (changedMonth) {
-                organizerInstance.onMonthChange(function () {
-                    organizerInstance.indicateEvents();
-                });
-            } else organizerInstance.update();
-        }, 1);
+        if (changedMonth) {
+            organizerInstance.onMonthChange(function () {
+                organizerInstance.indicateEvents();
+            });
+        } else organizerInstance.update();
     }
 };
 
@@ -559,10 +557,10 @@ Organizer.prototype.clearHistory = function () {
     document.getElementById(this.id + "-history").innerHTML = "";
 }
 
-Organizer.prototype.setupBlock = function (blockId, organizerInstance, callback) {
+Organizer.prototype.setupBlock = async function (blockId, organizerInstance, callback) {
     var calendarInstance = organizerInstance.calendar;
 
-    document.getElementById(calendarInstance.id + "-day-" + blockId).onclick = function () {
+    document.getElementById(calendarInstance.id + "-day-" + blockId).onclick = async function () {
         if (document.getElementById(calendarInstance.id + "-day-num-" + blockId).innerHTML.length > 0) {
             if (document.getElementById(calendarInstance.id + "-day-radio-" + blockId).checked)
                 return;
@@ -571,8 +569,15 @@ Organizer.prototype.setupBlock = function (blockId, organizerInstance, callback)
             document.getElementById(calendarInstance.id + "-day-num-" + blockId).dataset.longpressed = false;
 
             if (longPressed != "true") {
-                organizerInstance.changeDateTo(document.getElementById(calendarInstance.id + "-day-num-" + blockId).innerHTML, blockId);
-                callback();
+                let current_date = organizerInstance.calendar.date.toISOString();
+                await organizerInstance.changeDateTo(document.getElementById(calendarInstance.id + "-day-num-" + blockId).innerHTML, blockId);
+                let next_date = organizerInstance.calendar.date.toISOString();
+                let current_month = current_date[5] + current_date[6];
+                let next_month = next_date[5] + next_date[6];
+                if (current_month != next_month){
+                    await callback();
+                    organizerInstance.showEvents();
+                }
             }
         }
     };
