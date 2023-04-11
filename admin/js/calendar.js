@@ -697,23 +697,27 @@ Organizer.prototype.setOnClickListener = function (theCase, backCallback, nextCa
             };
             break;
         case "month-slider":
-            document.getElementById(calendarId + "-month-back").onclick = function () {
+            document.getElementById(calendarId + "-month-back").onclick = async function () {
                 organizerInstance.back('month');
-                backCallback();
+                await backCallback();
+                organizerInstance.showEvents();
             };
-            document.getElementById(calendarId + "-month-next").onclick = function () {
+            document.getElementById(calendarId + "-month-next").onclick = async function () {
                 organizerInstance.next('month');
-                nextCallback();
+                await nextCallback();
+                organizerInstance.showEvents();
             };
             break;
         case "year-slider":
-            document.getElementById(calendarId + "-year-back").onclick = function () {
+            document.getElementById(calendarId + "-year-back").onclick = async function () {
                 organizerInstance.back('year');
-                backCallback();
+                await backCallback();
+                organizerInstance.showEvents();
             };
-            document.getElementById(calendarId + "-year-next").onclick = function () {
+            document.getElementById(calendarId + "-year-next").onclick = async function () {
                 organizerInstance.next('year');
-                nextCallback();
+                await nextCallback();
+                organizerInstance.showEvents();
             };
             break;
     }

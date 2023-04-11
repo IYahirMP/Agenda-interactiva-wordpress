@@ -127,6 +127,7 @@
         organizador.setOnClickListener('days-blocks', obtenerDatos, obtenerDatos);
         organizador.setOnClickListener('month-slider', obtenerDatos, obtenerDatos);
         organizador.setOnClickListener('day-slider', obtenerDatos, obtenerDatos);
+        organizador.setOnClickListener('year-slider', obtenerDatos, obtenerDatos);
     }
 
     async function obtenerDatosCalendario(calendario) {
