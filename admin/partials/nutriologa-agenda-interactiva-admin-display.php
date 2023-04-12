@@ -51,6 +51,7 @@
 <?php include "nac_modales_calendario.php"; ?>
 
 <script>
+    var eventoActual = 0;
     //Aquí se renderiza el organizador
     $("document").ready(async function() {
         $("#boton").on("click", btnfun);
@@ -77,9 +78,39 @@
         $(".cjslib-list li").on("click", mostrarModal);
     }
 
-    function mostrarModal() {
+    async function mostrarModal() {
         var modal = new bootstrap.Modal(document.getElementById("modalInicial"));
         modal.show();
+        eventoActual = this;
+        var idActual = this.getAttribute("id");
+        var idx = [idActual.length - 3, idActual.length - 2, idActual.length - 1];
+        var idEvento = idActual[idx[0]] + idActual[idx[1]] + idActual[idx[2]];
+        console.log("El ev actual tiene id " + idEvento);
+        var info = await obtenerInformacionEvento(idEvento);
+        var infoJSON = JSON.parse(info);
+        console.log(infoJSON);
+    }
+
+    async function obtenerInformacionEvento(idEvento) {
+        try {
+            const response = await $.ajax({
+                type: "POST",
+                url: ajaxurl,
+                data: {
+                    action: 'obtenerInformacionEvento',
+                    data: idEvento
+                }
+            });
+            if (response.success == true) {
+                return response.data;
+            } else {
+                console.log("Error al obtener datos");
+                return "No data";
+            }
+        } catch (error) {
+            console.log("Error:", error);
+            return "No data";
+        }
     }
 
     function ajustarCalendario() {
@@ -108,7 +139,6 @@
 
     function ajustarOrganizador() {
         $(".cjslib-date").css("width", "100%");
-        $("#organizerContainer").css("marginLeft", "0");
         $(".cjslib-events.cjslib-size-small").css({
             "width": "40vw",
             "height": "90vh"
@@ -145,7 +175,6 @@
                 }
             });
             if (response.success == true) {
-                console.log(response.data)
                 document.querySelector("#espera").setAttribute("hidden", "hidden");
                 $(".cjslib-events.cjslib-size-small").removeAttr("hidden");
                 return response.data;

@@ -163,6 +163,7 @@ class Nutriologa_Agenda_Interactiva
 		$this->loader->add_action('wp_ajax_eliminarUbicacion', $plugin_admin, 'eliminarUbicacion');
 		$this->loader->add_action('wp_ajax_crearUbicacion', $plugin_admin, 'crearUbicacion');
 		$this->loader->add_action('wp_ajax_obtenerDatosCalendario', $plugin_admin, 'obtenerDatosCalendario');
+		$this->loader->add_action('wp_ajax_obtenerInformacionEvento', $plugin_admin, 'obtenerInformacionEvento');
 	}
 
 	/**

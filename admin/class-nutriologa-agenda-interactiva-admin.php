@@ -77,7 +77,7 @@ class Nutriologa_Agenda_Interactiva_Admin
 
 		wp_enqueue_style($this->plugin_name, plugin_dir_url(__FILE__) . 'css/nutriologa-agenda-interactiva-admin.css', array(), $this->version, 'all');
 		wp_enqueue_style($this->plugin_name . '-bootstrapcss', plugin_dir_url(__FILE__) . "css/bootstrap.min.css", array(), "v5.3.0-alpha1", 'all');
-		wp_enqueue_style($this->plugin_name . '-calendarcss', plugin_dir_url(__FILE__) . "css/calendar.css", array(), $this->version, 'all');
+		wp_enqueue_style($this->plugin_name . '-calendarcss', plugin_dir_url(__FILE__) . "css/calendar.css", array(), "1", 'all');
 	}
 
 	/**
@@ -280,6 +280,35 @@ class Nutriologa_Agenda_Interactiva_Admin
 		}
 
 		$aJSON = json_encode($a);
+
+		wp_send_json_success($aJSON);
+	}
+
+	public function obtenerInformacionEvento()
+	{
+		global $wpdb;
+		$idEvento = $_POST["data"];
+
+		$prefix = $wpdb->prefix . "nac_";
+		$cita = $prefix . "cita";
+		$cliente = $prefix . "cliente";
+		$horario = $prefix . "horario";
+		$ubicacion = $prefix . "ubicacion";
+
+		$consulta = "SELECT $cita.asunto, $cliente.nombre, $cliente.apellidoPaterno, $cliente.apellidoMaterno,
+				 $cliente.telefono, $cliente.correo, 
+				 $horario.dia, $horario.horaInicio, $horario.horaFin, 
+				 $ubicacion.estado, $ubicacion.municipio, $ubicacion.localidad, $ubicacion.calle,
+				 $ubicacion.colonia, $ubicacion.num_exterior, $ubicacion.num_interior,
+				 $ubicacion.telefono_contacto
+				 	FROM $cita JOIN $cliente on $cita.cliente = $cliente.id
+								JOIN $horario on $cita.horario = $horario.id
+								JOIN $ubicacion on $horario.ubicacion = $ubicacion.id
+					WHERE $cita.id = '$idEvento'";
+
+		$eventos = $wpdb->get_results($consulta);
+
+		$aJSON = json_encode($eventos);
 
 		wp_send_json_success($aJSON);
 	}
