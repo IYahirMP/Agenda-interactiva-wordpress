@@ -288,6 +288,11 @@ class Nutriologa_Agenda_Interactiva_Admin
 	{
 		global $wpdb;
 		$idEvento = $_POST["data"];
+		if ($idEvento[0] == "-" && $idEvento[1] == "-") {
+			$idEvento = $idEvento[2];
+		} else if ($idEvento[1 == "-"]) {
+			$idEvento = $idEvento[1] . $idEvento[2];
+		}
 
 		$prefix = $wpdb->prefix . "nac_";
 		$cita = $prefix . "cita";

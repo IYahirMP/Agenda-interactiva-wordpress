@@ -48,7 +48,7 @@
 </div>
 
 <!-- Modal -->
-<?php include "nac_modales_calendario.php"; ?>
+<?php include_once "nac_modales_calendario.php"; ?>
 
 <script>
     var eventoActual = 0;
@@ -79,8 +79,6 @@
     }
 
     async function mostrarModal() {
-        var modal = new bootstrap.Modal(document.getElementById("modalInicial"));
-        modal.show();
         eventoActual = this;
         var idActual = this.getAttribute("id");
         var idx = [idActual.length - 3, idActual.length - 2, idActual.length - 1];
@@ -89,6 +87,7 @@
         var info = await obtenerInformacionEvento(idEvento);
         var infoJSON = JSON.parse(info);
         console.log(infoJSON);
+        $("#modalInicial").modal('show');
     }
 
     async function obtenerInformacionEvento(idEvento) {
