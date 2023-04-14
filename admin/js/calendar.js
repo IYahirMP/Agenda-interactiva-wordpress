@@ -592,6 +592,7 @@ Organizer.prototype.showEvents = function (data) {
     let currentListItem = document.getElementById(this.id + "-list");
 
     try {
+        currentListItem.classList.remove("list--placeholder");
         var historyIndex = this.calendar.history.indexOf(this.calendar.getDateString());
         if (historyIndex > -1) {
             this.calendar.history.splice(historyIndex, 1);

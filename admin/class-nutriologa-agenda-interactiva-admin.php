@@ -103,7 +103,7 @@ class Nutriologa_Agenda_Interactiva_Admin
 		wp_enqueue_script($this->plugin_name, plugin_dir_url(__FILE__) . 'js/nutriologa-agenda-interactiva-admin.js', array('jquery'), "1.2.3", false);
 		wp_enqueue_script($this->plugin_name . '-jquery', plugin_dir_url(__FILE__) . "js/jquery-3.6.3.js", array(), $this->version, false);
 		wp_enqueue_script($this->plugin_name . '-bootstrapjs', plugin_dir_url(__FILE__) . "js/bootstrap.bundle.min.js", array(), "v5.3.0-alpha", false);
-		wp_enqueue_script($this->plugin_name . '-calendarjs', plugin_dir_url(__FILE__) . "js/calendar.js", array('jquery'), "1.7.3", false);
+		wp_enqueue_script($this->plugin_name . '-calendarjs', plugin_dir_url(__FILE__) . "js/calendar.js", array('jquery'), "1.7.4", false);
 	}
 
 	/**
