@@ -79,15 +79,19 @@
     }
 
     async function mostrarModal() {
+        //Se muestra el modal
+        $("#modalInicial").modal('show');
+        //Obtiene el elemento desde el cual se llama
         eventoActual = this;
+        //Retiene el atributo id
         var idActual = this.getAttribute("id");
+        //Obtiene el id de cita
         var idx = [idActual.length - 3, idActual.length - 2, idActual.length - 1];
         var idEvento = idActual[idx[0]] + idActual[idx[1]] + idActual[idx[2]];
-        console.log("El ev actual tiene id " + idEvento);
+
+        //Espera a que se obtenga información del servidor
         var info = await obtenerInformacionEvento(idEvento);
         var infoJSON = JSON.parse(info);
-        console.log(infoJSON);
-        $("#modalInicial").modal('show');
     }
 
     async function obtenerInformacionEvento(idEvento) {

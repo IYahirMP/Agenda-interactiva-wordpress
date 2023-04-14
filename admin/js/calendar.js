@@ -589,6 +589,8 @@ Organizer.prototype.showEvents = function (data) {
 
     var content = "";
     var history = "";
+    let currentListItem = document.getElementById(this.id + "-list");
+
     try {
         var historyIndex = this.calendar.history.indexOf(this.calendar.getDateString());
         if (historyIndex > -1) {
@@ -602,9 +604,10 @@ Organizer.prototype.showEvents = function (data) {
         content = this.list(data[date.getFullYear()][date.getMonth() + 1][date.getDate()]);
     } catch (e) {
         content = this.showPlaceholder();
+        currentListItem.classList.add("list--placeholder");
     }
 
-    document.getElementById(this.id + "-list").innerHTML = content;
+    currentListItem.innerHTML = content;
     ajustarEventos();
 };
 
