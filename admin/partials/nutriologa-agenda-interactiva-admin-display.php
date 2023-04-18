@@ -34,11 +34,74 @@
         flex: 0 1 5vw;
         font-size: 3rem;
     }
+
+    .cjslib-calendar.cjslib-size-small {
+        width: 45vw;
+        height: 90vh;
+    }
+
+    .cjslib-date {
+        width: 100%;
+    }
+
+    .cjslib-events.cjslib-size-small {
+        width: 45vw;
+        height: 90vh;
+    }
+
+    @media screen and (max-width:576px) {
+        #espera {
+            width: 90vw;
+            height: 90vh;
+            background-color: #f6f6f6;
+            display: flex;
+            flex-flow: column nowrap;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .parrafo-espera {
+            flex: 0 1 5vw;
+            font-size: 3rem;
+        }
+
+        .cjslib-calendar.cjslib-size-small {
+            width: 90vw;
+            height: 90vh;
+        }
+
+        .cjslib-date {
+            width: 100%;
+        }
+
+        .cjslib-events.cjslib-size-small {
+            width: 90vw;
+            height: 90vh;
+        }
+
+        .agenda {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        .calendarContainer {
+            margin-bottom: 5vh;
+            display: flex;
+            justify-content: center;
+        }
+
+        .organizerContainer {
+            display: flex;
+            justify-content: center;
+        }
+    }
 </style>
 
-<div class="row">
-    <div id="calendarContainer" class="col-md-6 col-sm-12"></div>
-    <div id="organizerContainer" class="col-md-6 col-sm-12" style="">
+<div class="row agenda">
+    <div id="calendarContainer" class="col-sm-6 col-xs-12 calendarContainer"></div>
+    <div id="organizerContainer" class="col-sm-6 col-xs-12 organizerContainer">
         <div id="espera" hidden="">
             <p class="parrafo-espera">
                 Cargando datos...
@@ -54,11 +117,9 @@
     var eventoActual = 0;
     //Aquí se renderiza el organizador
     $("document").ready(async function() {
-        $("#boton").on("click", btnfun);
         //Creación del calendario
         calendario = crearCalendario();
         //Esta línea quita los límites de tamaño del calendario.
-        ajustarCalendario();
         //Creación de datos
         var data = await obtenerDatosCalendario(calendario);
         data = JSON.parse(data);
@@ -70,7 +131,6 @@
         organizador = crearOrganizador(calendario, data);
         escucharCambioMes(organizador);
         //Esta linea quita el margen al organizador. Permite utilizar columnas de 50% con bootstrap
-        ajustarOrganizador();
         ajustarEventos();
     })
 
@@ -116,13 +176,6 @@
         }
     }
 
-    function ajustarCalendario() {
-        $(".cjslib-calendar.cjslib-size-small").css({
-            "width": "40vw",
-            "height": "90vh"
-        })
-    }
-
     function crearCalendario() {
         var calendar = new Calendar("calendarContainer", "small",
             ["Lunes", 3],
@@ -138,18 +191,6 @@
     function crearOrganizador(calendario, datos) {
         var organizer = new Organizer("organizerContainer", calendario, datos);
         return organizer;
-    }
-
-    function ajustarOrganizador() {
-        $(".cjslib-date").css("width", "100%");
-        $(".cjslib-events.cjslib-size-small").css({
-            "width": "40vw",
-            "height": "90vh"
-        });
-    }
-
-    function btnfun() {
-        $("#boton").css("border", "10px solid red");
     }
 
     function escucharCambioMes(organizador) {
