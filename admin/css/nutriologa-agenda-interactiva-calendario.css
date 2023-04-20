@@ -1,0 +1,77 @@
+#espera {
+  width: 40vw;
+  height: 90vh;
+  background-color: #f6f6f6;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: center;
+}
+
+.parrafo-espera {
+  flex: 0 1 5vw;
+  font-size: 3rem;
+}
+
+.cjslib-calendar.cjslib-size-small {
+  width: 42.5vw;
+  height: 90vh;
+}
+
+.cjslib-date {
+  width: 100%;
+}
+
+.cjslib-events.cjslib-size-small {
+  width: 42.5vw;
+  height: 90vh;
+}
+
+@media screen and (max-width: 576px) {
+  #espera {
+    width: 90vw;
+    height: 90vh;
+    background-color: #f6f6f6;
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .parrafo-espera {
+    flex: 0 1 5vw;
+    font-size: 3rem;
+  }
+
+  .cjslib-calendar.cjslib-size-small {
+    width: 90vw;
+    height: 90vh;
+  }
+
+  .cjslib-date {
+    width: 100%;
+  }
+
+  .cjslib-events.cjslib-size-small {
+    width: 90vw;
+    height: 90vh;
+  }
+
+  .agenda {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+  }
+
+  .calendarContainer {
+    margin-bottom: 5vh;
+    display: flex;
+    justify-content: center;
+  }
+
+  .organizerContainer {
+    display: flex;
+    justify-content: center;
+  }
+}
