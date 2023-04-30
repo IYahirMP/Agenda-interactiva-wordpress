@@ -19,7 +19,7 @@
     </div>
 </div>
 
-<div class="modal fade" id="modalInicial" tabindex="-1" aria-labelledby="modalInicialLabel" aria-hidden="true">
+<div class="modal fade modal-sm" id="modalInicial" tabindex="-1" aria-labelledby="modalInicialLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">

@@ -81,12 +81,12 @@ class Nutriologa_Agenda_Interactiva_Admin
 		$esAdmin = $esCalendario || $esUbicaciones;
 
 		if ($esAdmin) {
-			wp_enqueue_style($this->plugin_name . '-bootstrapcss', plugin_dir_url(__FILE__) . "css/bootstrap.min.css", array(), "v5.3.0-alpha1", 'all');
-			wp_enqueue_style($this->plugin_name . '-calendarcss', plugin_dir_url(__FILE__) . "css/calendar.css", array(), "1.1", 'all');
+			wp_enqueue_style($this->plugin_name . '-bootstrapcss', plugin_dir_url(__FILE__) . "css/bootstrap.min.css", array(), "v5.3.0-alpha3", 'all');
+			wp_enqueue_style($this->plugin_name . '-calendarcss', plugin_dir_url(__FILE__) . "css/calendar.css", array(), "1.22", 'all');
 		}
 
 		if ($esCalendario)
-			wp_enqueue_style($this->plugin_name, plugin_dir_url(__FILE__) . 'css/nutriologa-agenda-interactiva-calendario.css', array(), "1.0", 'all');
+			wp_enqueue_style($this->plugin_name, plugin_dir_url(__FILE__) . 'css/nutriologa-agenda-interactiva-calendario.css', array(), "1.22", 'all');
 	}
 
 	/**
@@ -113,15 +113,15 @@ class Nutriologa_Agenda_Interactiva_Admin
 		$esCalendario = $current_screen->id == "toplevel_page_agenda";
 		$esUbicaciones = $current_screen->id == "agenda-de-citas_page_nac_ubicaciones";
 		$esAdmin = $esCalendario || $esUbicaciones;
-		if ($esCalendario)
-			wp_enqueue_script($this->plugin_name, plugin_dir_url(__FILE__) . 'js/nutriologa-agenda-interactiva-calendario.js', array('jquery'), "1.2.3", true);
-		if ($esUbicaciones)
-			wp_enqueue_script($this->plugin_name, plugin_dir_url(__FILE__) . 'js/nutriologa-agenda-interactiva-ubicaciones.js', array('jquery'), "1.2.3", false);
 		if ($esAdmin) {
+			wp_enqueue_script($this->plugin_name . '-calendarjs', plugin_dir_url(__FILE__) . "js/calendar.js", array('jquery'), "1.7.53", false);
 			wp_enqueue_script($this->plugin_name . '-jquery', plugin_dir_url(__FILE__) . "js/jquery-3.6.3.js", array(), $this->version, false);
-			wp_enqueue_script($this->plugin_name . '-bootstrapjs', plugin_dir_url(__FILE__) . "js/bootstrap.bundle.min.js", array(), "v5.3.0-alpha", false);
-			wp_enqueue_script($this->plugin_name . '-calendarjs', plugin_dir_url(__FILE__) . "js/calendar.js", array('jquery'), "1.7.4", false);
+			wp_enqueue_script($this->plugin_name . '-bootstrapjs', plugin_dir_url(__FILE__) . "js/bootstrap.bundle.min.js", array(), "v5.3.0-alpha3", false);
 		}
+		if ($esCalendario)
+			wp_enqueue_script($this->plugin_name, plugin_dir_url(__FILE__) . 'js/nutriologa-agenda-interactiva-calendario.js', array('jquery'), "1.2.5", true);
+		if ($esUbicaciones)
+			wp_enqueue_script($this->plugin_name, plugin_dir_url(__FILE__) . 'js/nutriologa-agenda-interactiva-ubicaciones.js', array('jquery'), "1.2.5", false);
 	}
 
 	/**

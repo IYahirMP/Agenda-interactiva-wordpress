@@ -175,6 +175,7 @@ $resultado = $wpdb->get_results($consulta);
 
     <script>
         var datos = <?php echo json_encode($resultado) ?>;
+        $(".modal").appendTo("body");
     </script>
 
 </body>

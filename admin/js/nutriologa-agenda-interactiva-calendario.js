@@ -14,15 +14,19 @@
         console.log(data);
         organizador = crearOrganizador(calendario, data);
         escucharCambioMes(organizador);
+        $(".modal").appendTo("body");
         //Esta linea quita el margen al organizador. Permite utilizar columnas de 50% con bootstrap
-        ajustarEventos();
+        //ajustarEventos();
     })
 
-    function ajustarEventos() {
-        $(".cjslib-list li").on("click", mostrarModal);
-    }
+    /*function ajustarEventos() {
+        document.querySelectorAll(".cjslib-list li").forEach((elem) => {
+            elem.setAttribute("data-bs-toggle","modal");
+            elem.setAttribute("data-bs-target", "#modalInicial");
+        })
+    }*/
 
-    async function mostrarModal() {
+    /*async function mostrarModal() {
         //Se muestra el modal
         $("#modalInicial").modal('show');
         //Obtiene el elemento desde el cual se llama
@@ -36,7 +40,7 @@
         //Espera a que se obtenga información del servidor
         var info = await obtenerInformacionEvento(idEvento);
         var infoJSON = JSON.parse(info);
-    }
+    }*/
 
     async function obtenerInformacionEvento(idEvento) {
         try {

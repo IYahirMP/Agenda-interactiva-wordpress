@@ -771,10 +771,14 @@ Organizer.prototype.setOnLongClickListener = function (theCase, backCallback, ne
 }
 
 function ajustarEventos() {
-    $(".cjslib-list li").on("click", mostrarModal);
+    document.querySelectorAll(".cjslib-list li").forEach((elem) => {
+        elem.setAttribute("data-bs-toggle","modal");
+        elem.setAttribute("data-bs-target", "#modalInicial");
+    });
 }
 
 function mostrarModal() {
-    var modal = new bootstrap.Modal(document.getElementById("exampleModal"));
+    console.log("Modal mostrando...");
+    var modal = new bootstrap.Modal(document.getElementById("modalInicial"));
     modal.show();
 }

@@ -14,7 +14,7 @@
 }
 
 .cjslib-calendar.cjslib-size-small {
-  width: 42.5vw;
+  width: 100%;
   height: 90vh;
 }
 
@@ -23,11 +23,15 @@
 }
 
 .cjslib-events.cjslib-size-small {
-  width: 42.5vw;
+  width: 100%;
   height: 90vh;
 }
 
-@media screen and (max-width: 576px) {
+.agenda {
+  margin: 10px;
+}
+
+@media screen and (max-width: 768px) {
   #espera {
     width: 90vw;
     height: 90vh;
@@ -65,12 +69,14 @@
   }
 
   .calendarContainer {
+    width: 90vw;
     margin-bottom: 5vh;
     display: flex;
     justify-content: center;
   }
 
   .organizerContainer {
+    width: 90vw;
     display: flex;
     justify-content: center;
   }
