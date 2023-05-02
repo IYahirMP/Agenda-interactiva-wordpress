@@ -19,7 +19,7 @@
     </div>
 </div>
 
-<div class="modal fade modal-sm" id="modalInicial" tabindex="-1" aria-labelledby="modalInicialLabel" aria-hidden="true">
+<!--div class="modal fade modal-sm" id="modalInicial" tabindex="-1" aria-labelledby="modalInicialLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
@@ -30,6 +30,74 @@
                 <button type="button" class="btn btn-danger" data-bs-target="#modalEliminar" data-bs-toggle="modal">Eliminar</button>
             </div>
             <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div-->
+
+
+<div class="modal fade" id="modalInicial" tabindex="-1" aria-labelledby="modalInicialLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="modalInicialLabel">Detalles del registro</h1>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="row g-3 text-center">Datos del cliente</div>
+                            <hr>
+                            <div class="row g-3">
+                                <div class="col-4">
+                                    <label for="nombre">Nombre</label>
+                                </div>
+                                <div class="col-8">
+                                    <input class="form-control" type="text" disabled>
+                                </div>
+                            </div>
+                            <div class="row g-3">
+                                <div class="col-4">
+                                    <label for="telefono">Teléfono</label>
+                                </div>
+                                <div class="col-8">
+                                    <input class="form-control" type="text" disabled>
+                                </div>
+                            </div>
+                            <div class="row g-3">
+                                <div class="col-4">
+                                    <label for="correo">Correo</label>
+                                </div>
+                                <div class="col-8">
+                                    <input class="form-control" type="text" disabled>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="row g-3">
+                                <div class="col-4">
+                                    <label for="fecha">Fecha</label>
+                                </div>
+                                <div class="col-8">
+                                    <input class="form-control" type="text" disabled>
+                                </div>
+                            </div>
+                            <div class="row g-3">
+                                <div class="col-4">
+                                    <label for="ubicacion">Ubicación</label>
+                                </div>
+                                <div class="col-8">
+                                    <input class="form-control" type="text" disabled>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer d-flex flex-row justify-content-around">
+                <button type="button" class="btn btn-primary" data-bs-target="#modalRegistro" data-bs-toggle="modal">Modificar</button>
+                <button type="button" class="btn btn-danger" data-bs-target="#modalEliminar" data-bs-toggle="modal">Eliminar</button>
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
             </div>
         </div>
