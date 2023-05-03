@@ -86,7 +86,7 @@ class Nutriologa_Agenda_Interactiva_Admin
 		}
 
 		if ($esCalendario)
-			wp_enqueue_style($this->plugin_name, plugin_dir_url(__FILE__) . 'css/nutriologa-agenda-interactiva-calendario.css', array(), "1.22", 'all');
+			wp_enqueue_style($this->plugin_name, plugin_dir_url(__FILE__) . 'css/nutriologa-agenda-interactiva-calendario.css', array(), "1.37", 'all');
 	}
 
 	/**

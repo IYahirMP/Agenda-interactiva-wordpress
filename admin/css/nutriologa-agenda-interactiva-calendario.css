@@ -81,3 +81,23 @@
     justify-content: center;
   }
 }
+
+/*Modal clientes*/
+.modal-formulario-seccion {
+  margin-bottom: 10px;
+}
+
+.campo {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+.campo label {
+  max-width: 30%;
+  min-width: 10%;
+  overflow: hidden;
+}
+.campo input {
+  max-width: 70%;
+  overflow: scroll;
+}
