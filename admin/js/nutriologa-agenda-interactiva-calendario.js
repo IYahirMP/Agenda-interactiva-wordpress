@@ -15,32 +15,44 @@
         organizador = crearOrganizador(calendario, data);
         escucharCambioMes(organizador);
         $(".modal").appendTo("body");
-        //Esta linea quita el margen al organizador. Permite utilizar columnas de 50% con bootstrap
-        //ajustarEventos();
     })
 
-    /*function ajustarEventos() {
-        document.querySelectorAll(".cjslib-list li").forEach((elem) => {
-            elem.setAttribute("data-bs-toggle","modal");
-            elem.setAttribute("data-bs-target", "#modalInicial");
-        })
-    }*/
 
-    /*async function mostrarModal() {
+    async function mostrarModal() {
         //Se muestra el modal
         $("#modalInicial").modal('show');
         //Obtiene el elemento desde el cual se llama
         eventoActual = this;
+        console.log(eventoActual);
         //Retiene el atributo id
         var idActual = this.getAttribute("id");
         //Obtiene el id de cita
         var idx = [idActual.length - 3, idActual.length - 2, idActual.length - 1];
+        console.log("idx",idx);
         var idEvento = idActual[idx[0]] + idActual[idx[1]] + idActual[idx[2]];
+        console.log("idEvento",idEvento);
 
         //Espera a que se obtenga información del servidor
         var info = await obtenerInformacionEvento(idEvento);
         var infoJSON = JSON.parse(info);
-    }*/
+        var cita = infoJSON[0];
+
+        console.log(cita);
+
+        document.querySelectorAll("input").forEach((elem) => elem.setAttribute("disabled", "disabled"));
+         
+        //ActualizarNombre
+        document.querySelector("[name=nombre]").value = `${cita.nombre} ${cita.apellidoPaterno} ${cita.apellidoMaterno}`;
+        //Actualizar telefono
+        document.querySelector("[name=telefono]").value = cita.telefono;
+        //Actualizar correo
+        document.querySelector("[name=correo]").value = cita.correo;
+        //Actualizar fecha
+        document.querySelector("[name=fecha]").value = cita.dia;
+        //Actualizar ubicacion
+        var ubicacion = `Calle ${cita.calle}, colonia ${cita.colonia}, municipio de ${cita.municipio}, No. Exterior ${cita.num_exterior}, No. Interior ${cita.num_interior}.`;
+        document.querySelector("[name=ubicacion]").value = ubicacion;
+    }
 
     async function obtenerInformacionEvento(idEvento) {
         try {
@@ -77,7 +89,12 @@
     }
 
     function crearOrganizador(calendario, datos) {
-        var organizer = new Organizer("organizerContainer", calendario, datos);
+        var ajustarEventos = function () {
+            document.querySelectorAll(".cjslib-list li").forEach((elem) => {
+                elem.addEventListener("click", mostrarModal);
+            });
+        }
+        var organizer = new Organizer("organizerContainer", calendario, datos, ajustarEventos);
         return organizer;
     }
 

@@ -114,12 +114,12 @@ class Nutriologa_Agenda_Interactiva_Admin
 		$esUbicaciones = $current_screen->id == "agenda-de-citas_page_nac_ubicaciones";
 		$esAdmin = $esCalendario || $esUbicaciones;
 		if ($esAdmin) {
-			wp_enqueue_script($this->plugin_name . '-calendarjs', plugin_dir_url(__FILE__) . "js/calendar.js", array('jquery'), "1.7.53", false);
+			wp_enqueue_script($this->plugin_name . '-calendarjs', plugin_dir_url(__FILE__) . "js/calendar.js", array('jquery'), "2.0.1", false);
 			wp_enqueue_script($this->plugin_name . '-jquery', plugin_dir_url(__FILE__) . "js/jquery-3.6.3.js", array(), $this->version, false);
 			wp_enqueue_script($this->plugin_name . '-bootstrapjs', plugin_dir_url(__FILE__) . "js/bootstrap.bundle.min.js", array(), "v5.3.0-alpha3", false);
 		}
 		if ($esCalendario)
-			wp_enqueue_script($this->plugin_name, plugin_dir_url(__FILE__) . 'js/nutriologa-agenda-interactiva-calendario.js', array('jquery'), "1.2.5", true);
+			wp_enqueue_script($this->plugin_name, plugin_dir_url(__FILE__) . 'js/nutriologa-agenda-interactiva-calendario.js', array('jquery'), "1.3.0_10", true);
 		if ($esUbicaciones)
 			wp_enqueue_script($this->plugin_name, plugin_dir_url(__FILE__) . 'js/nutriologa-agenda-interactiva-ubicaciones.js', array('jquery'), "1.2.5", false);
 	}
@@ -306,10 +306,10 @@ class Nutriologa_Agenda_Interactiva_Admin
 	{
 		global $wpdb;
 		$idEvento = $_POST["data"];
-		if ($idEvento[0] == "-" && $idEvento[1] == "-") {
-			$idEvento = $idEvento[2];
-		} else if ($idEvento[1 == "-"]) {
+		if ($idEvento[0] == "-") {
 			$idEvento = $idEvento[1] . $idEvento[2];
+		} else if ($idEvento[1] == "-") {
+			$idEvento = $idEvento[2];
 		}
 
 		$prefix = $wpdb->prefix . "nac_";
@@ -318,7 +318,7 @@ class Nutriologa_Agenda_Interactiva_Admin
 		$horario = $prefix . "horario";
 		$ubicacion = $prefix . "ubicacion";
 
-		$consulta = "SELECT $cita.asunto, $cliente.nombre, $cliente.apellidoPaterno, $cliente.apellidoMaterno,
+		$consulta = "SELECT $cita.id, $cita.asunto, $cliente.nombre, $cliente.apellidoPaterno, $cliente.apellidoMaterno,
 				 $cliente.telefono, $cliente.correo, 
 				 $horario.dia, $horario.horaInicio, $horario.horaFin, 
 				 $ubicacion.estado, $ubicacion.municipio, $ubicacion.localidad, $ubicacion.calle,
