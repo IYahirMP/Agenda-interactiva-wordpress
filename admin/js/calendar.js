@@ -317,7 +317,8 @@ Calendar.prototype.setOnClickListener = function (theCase, backCallback, nextCal
     }
 };
 
-function Organizer(id, calendar, data) {
+function Organizer(id, calendar, data, ajustarEventos) {
+    this.ajustarEventos = ajustarEventos;
     this.id = id;
     this.calendar = calendar;
 
@@ -609,7 +610,7 @@ Organizer.prototype.showEvents = function (data) {
     }
 
     currentListItem.innerHTML = content;
-    ajustarEventos();
+    this.ajustarEventos();
 };
 
 Organizer.prototype.showHistory = function (data) {
@@ -768,13 +769,6 @@ Organizer.prototype.setOnLongClickListener = function (theCase, backCallback, ne
             }
             break;
     }
-}
-
-function ajustarEventos() {
-    document.querySelectorAll(".cjslib-list li").forEach((elem) => {
-        elem.setAttribute("data-bs-toggle","modal");
-        elem.setAttribute("data-bs-target", "#modalInicial");
-    });
 }
 
 function mostrarModal() {
