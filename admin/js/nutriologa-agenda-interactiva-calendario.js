@@ -17,8 +17,24 @@
         $(".modal").appendTo("body");
     })
 
+    function deshabilitarModal(){
+        document.querySelector("[name=nombre]").setAttribute("disabled", "");
+        document.querySelector("[name=telefono]").setAttribute("disabled", "");
+        document.querySelector("[name=correo]").setAttribute("disabled", "");
+        document.querySelector("[name=fecha]").setAttribute("disabled", "");
+        document.querySelector("[name=ubicacion]").setAttribute("disabled", "");
+    }
+
+    function limpiarModal(){
+        document.querySelector("[name=nombre]").value="";
+        document.querySelector("[name=telefono]").value="";
+        document.querySelector("[name=correo]").value="";
+        document.querySelector("[name=fecha]").value="";
+        document.querySelector("[name=ubicacion]").value="";
+    }
 
     async function mostrarModal() {
+        limpiarModal();
         //Se muestra el modal
         $("#modalInicial").modal('show');
         //Obtiene el elemento desde el cual se llama
@@ -39,7 +55,7 @@
 
         console.log(cita);
 
-        document.querySelectorAll("input").forEach((elem) => elem.setAttribute("disabled", "disabled"));
+        deshabilitarModal();
          
         //ActualizarNombre
         document.querySelector("[name=nombre]").value = `${cita.nombre} ${cita.apellidoPaterno} ${cita.apellidoMaterno}`;

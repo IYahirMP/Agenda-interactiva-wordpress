@@ -8,7 +8,7 @@
                 <div class="text-center">
                     <p>Espere un momento, por favor. Se está procesando la operación</p>
                     <div class="d-flex justify-content-center">
-                        <img style="height:10vh; text-align:center;" src="/wp-content/plugins/nutriologa-agenda-interactiva/admin/images/wip.png">
+                        <img style="height:10vh; text-align:center;" src="/wordpress/wp-content/plugins/nutriologa-agenda-interactiva/admin/images/wip.png">
                     </div>
                 </div>
             </div>
@@ -135,8 +135,8 @@
                         <input class="form-control" id="fecha" name="fecha" type="text">
                     </div>
                     <div class="campo">
-                        <label for="ubicacion">Ubicación</label>
-                        <input class="form-control" id="ubicacion" name="ubicacion" type="text">
+                        <label for="ubicacion" class="form-label">Ubicación</label>
+                        <input class="form-control" id="ubicacion" name="ubicacion" type="textarea" rows="2">
                     </div>
                 </div>
             </div>

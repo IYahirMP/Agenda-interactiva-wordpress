@@ -101,3 +101,11 @@
   max-width: 70%;
   overflow: scroll;
 }
+
+.campo input[disabled] {
+  color: black;
+}
+
+.campo input[name="ubicacion"] {
+  height: 10vh;
+}

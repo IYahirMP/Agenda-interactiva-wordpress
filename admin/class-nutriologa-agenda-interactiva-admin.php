@@ -86,7 +86,7 @@ class Nutriologa_Agenda_Interactiva_Admin
 		}
 
 		if ($esCalendario)
-			wp_enqueue_style($this->plugin_name, plugin_dir_url(__FILE__) . 'css/nutriologa-agenda-interactiva-calendario.css', array(), "1.37", 'all');
+			wp_enqueue_style($this->plugin_name, plugin_dir_url(__FILE__) . 'css/nutriologa-agenda-interactiva-calendario.css', array(), "1.39", 'all');
 	}
 
 	/**
@@ -119,7 +119,7 @@ class Nutriologa_Agenda_Interactiva_Admin
 			wp_enqueue_script($this->plugin_name . '-bootstrapjs', plugin_dir_url(__FILE__) . "js/bootstrap.bundle.min.js", array(), "v5.3.0-alpha3", false);
 		}
 		if ($esCalendario)
-			wp_enqueue_script($this->plugin_name, plugin_dir_url(__FILE__) . 'js/nutriologa-agenda-interactiva-calendario.js', array('jquery'), "1.3.0_10", true);
+			wp_enqueue_script($this->plugin_name, plugin_dir_url(__FILE__) . 'js/nutriologa-agenda-interactiva-calendario.js', array('jquery'), "1.3.0_13", true);
 		if ($esUbicaciones)
 			wp_enqueue_script($this->plugin_name, plugin_dir_url(__FILE__) . 'js/nutriologa-agenda-interactiva-ubicaciones.js', array('jquery'), "1.2.5", false);
 	}

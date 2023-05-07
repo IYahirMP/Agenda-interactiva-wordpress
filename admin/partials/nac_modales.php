@@ -69,7 +69,7 @@
                 <div class="text-center">
                     <p id="guardado">La ubicación ha sido guardada exitosamente.</p>
                     <div class="d-flex justify-content-center">
-                        <img style="height:10vh; text-align:center;" src="/wp-content/plugins/nutriologa-agenda-interactiva/admin/images/check.png">
+                        <img style="height:10vh; text-align:center;" src="/wordpress/wp-content/plugins/nutriologa-agenda-interactiva/admin/images/check.png">
                     </div>
                 </div>
             </div>
@@ -90,7 +90,7 @@
                 <div class="text-center">
                     <p id="guardado">La ubicación ha sido creada exitosamente.</p>
                     <div class="d-flex justify-content-center">
-                        <img style="height:10vh; text-align:center;" src="/wp-content/plugins/nutriologa-agenda-interactiva/admin/images/check.png">
+                        <img style="height:10vh; text-align:center;" src="/wordpress/wp-content/plugins/nutriologa-agenda-interactiva/admin/images/check.png">
                     </div>
                 </div>
             </div>
@@ -111,7 +111,7 @@
                 <div class="text-center">
                     <p>Hubo un error al crear la ubicación.</p>
                     <div class="d-flex justify-content-center">
-                        <img style="height:10vh; text-align:center;" src="/wp-content/plugins/nutriologa-agenda-interactiva/admin/images/cross.png">
+                        <img style="height:10vh; text-align:center;" src="/wordpress/wp-content/plugins/nutriologa-agenda-interactiva/admin/images/cross.png">
                     </div>
                 </div>
             </div>
@@ -132,7 +132,7 @@
                 <div class="text-center">
                     <p>Los datos de la ubicación no pudieron guardarse correctamente.</p>
                     <div class="d-flex justify-content-center">
-                        <img style="height:10vh; text-align:center;" src="/wp-content/plugins/nutriologa-agenda-interactiva/admin/images/cross.png">
+                        <img style="height:10vh; text-align:center;" src="/wordpress/wp-content/plugins/nutriologa-agenda-interactiva/admin/images/cross.png">
                     </div>
                 </div>
             </div>
@@ -153,7 +153,7 @@
                 <div class="text-center">
                     <p>La ubicación ha sido eliminada exitosamente.</p>
                     <div class="d-flex justify-content-center">
-                        <img style="height:10vh; text-align:center;" src="/wp-content/plugins/nutriologa-agenda-interactiva/admin/images/check.png">
+                        <img style="height:10vh; text-align:center;" src="/wordpress/wp-content/plugins/nutriologa-agenda-interactiva/admin/images/check.png">
                     </div>
                 </div>
             </div>
@@ -174,7 +174,7 @@
                 <div class="text-center">
                     <p>Espere un momento, por favor. Se está procesando la operación</p>
                     <div class="d-flex justify-content-center">
-                        <img style="height:10vh; text-align:center;" src="/wp-content/plugins/nutriologa-agenda-interactiva/admin/images/wip.png">
+                        <img style="height:10vh; text-align:center;" src="/wordpress/wp-content/plugins/nutriologa-agenda-interactiva/admin/images/wip.png">
                     </div>
                 </div>
             </div>
@@ -195,7 +195,7 @@
                 <div class="text-center">
                     <p>La ubicación no pudo ser eliminada.</p>
                     <div class="d-flex justify-content-center">
-                        <img style="height:10vh; text-align:center;" src="/wp-content/plugins/nutriologa-agenda-interactiva/admin/images/cross.png">
+                        <img style="height:10vh; text-align:center;" src="/wordpress/wp-content/plugins/nutriologa-agenda-interactiva/admin/images/cross.png">
                     </div>
                 </div>
             </div>
